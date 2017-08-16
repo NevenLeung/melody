@@ -1,0 +1,13 @@
+<div class="container">
+    <h5>Playlist</h5>
+    <ul>
+        <li ng-repeat="song in playlist">
+            <a play-from-playlist="song">{{ song.title }}</a>
+            -
+            <a remove-from-playlist="song" data-index="{{$index}}">
+                <small>(remove)</small>
+            </a>
+            <span ng-if="currentPlaying.id == song.id"> - (current)</span>
+        </li>
+    </ul>
+</div>
