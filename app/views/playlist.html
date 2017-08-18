@@ -1,16 +1,40 @@
 
-    <div class="row col-lg-4 col-md-5">
-        <h5>Playlist</h5>
-        <ul>
-            <li ng-repeat="song in playlist">
-                <a play-from-playlist="song">{{ song.title }}</a>
-                -
-                <a remove-from-playlist="song" data-index="{{$index}}">
-                    <small>(remove)</small>
-                </a>
-                <span ng-if="currentPlaying.id == song.id"> - (current)</span>
-            </li>
-            <button clear-playlist>Clear Playlist</button>
-        </ul>
+    <div class="row playlist">
+        <div class="playlist-header">
+            <span>Playlist</span>
+            <a clear-playlist class="pull-right" title="clear the playlist">
+                <span class="fa fa-trash-o"></span>
+            </a>
+        </div>
+        <div class="playlist-group">
+            <table class="table table-hover table-condensed" sv-root sv-part="playlist">
+                <tr ng-repeat="song in playlist" class="playlist-item" sv-element>
+                    <td class="song-index">
+                        <span ng-show="!(currentPlaying.id == song.id)">{{playlist.indexOf(song) + 1}}</span>
+                        <span ng-if="currentPlaying.id == song.id" class="wave">&nbsp;&nbsp;&nbsp;</span>
+                    </td>
+                    <td>
+                        <a play-from-playlist="song">{{ song.title }}</a>
+                    </td>
+                    <td>
+                        <a title="Drag/drop a item to adjust the playlist order">-</a>
+                    </td>
+                    <td>
+                        <a>{{song.artist}}</a>
+                    </td>
+                    <td>
+                        <a ng-click="toggleFavorite(currentPlaying)">
+                            <span class="fa" ng-class="{'fa-heart': song.favorite, 'fa-heart-o': !song  .favorite}"></span>
+                        </a>
+                        <a remove-from-playlist="song" data-index="{{$index}}">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+                    </td>
+                    <td class="song-time">
+                        <a>{{song.time}}</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 

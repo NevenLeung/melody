@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider'])
+angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider', 'angular-sortable-view'])
     .config(function ($stateProvider, $urlRouterProvider, $uibTooltipProvider) {
         $stateProvider
 
@@ -12,7 +12,7 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                 url: '/',
                 views: {
                     'header': {
-                        templateUrl: '',
+                        templateUrl: 'views/header.html',
                         // controller: ''
                     },
                     // 'content': {

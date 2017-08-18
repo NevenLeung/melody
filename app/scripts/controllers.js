@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('Melody')
-    .controller('playerCtrl', ['$scope', 'angularPlayer', function ($scope, angularPlayer) {
+    .controller('playerCtrl', ['$scope', 'angularPlayer', '$timeout', function ($scope, angularPlayer, $timeout) {
         $scope.songs = [
             // {
             //     id: 1,
@@ -32,19 +32,22 @@ angular.module('Melody')
                 title: 'SHIROBAKO',
                 artist: 'Unknown',
                 url: 'http://localhost:3000/confusion-bootstrap/music/SHIROBAKO.mp3',
+                time: '3:08',
                 favorite: true
             },
             {
                 id: 2,
                 title: 'TREASURE BOX',
                 artist: '奥井雅美',
-                url: 'http://localhost:3000/confusion-bootstrap/music/奥井雅美 - 宝箱-TREASURE BOX- (TVアニメ『SHIROBAKO』OPテーマ).mp3'
+                url: 'http://localhost:3000/confusion-bootstrap/music/奥井雅美 - 宝箱-TREASURE BOX- (TVアニメ『SHIROBAKO』OPテーマ).mp3',
+                time: '3:50'
             },
             {
                 id: 3,
                 title: 'COLORFUL BOX',
                 artist: '石田燿子',
-                url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3'
+                url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3',
+                time: '3:59'
             }
         ];
 
@@ -67,6 +70,18 @@ angular.module('Melody')
 
         $scope.toggleFavorite = function () {
             return $scope.currentPlaying.favorite = !$scope.currentPlaying.favorite;
+        };
+
+        $scope.clickIndex = function (song) {
+            console.log($scope.playlist);
+            console.log(angularPlayer.getIndexByValue($scope.playlist, song));
+        };
+        
+        $scope.spinIcon = function () {
+            $scope.spinner = true;
+            $timeout(function () {
+                $scope.spinner = false
+            }, 1000);
         };
 
         $scope.isOpen = false;

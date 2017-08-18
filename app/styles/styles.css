@@ -3,6 +3,7 @@
     height: 5px;
     width: 40%;
     border: 1px solid #cccccc;
+    cursor: pointer;
 }
 
 .seekLoad {
@@ -11,16 +12,6 @@
     width: 0;
     background-color: salmon;
     /*background-color: #E0EAF1;*/
-}
-
-.no-border {
-    border: none;
-    background: transparent;
-}
-
-.longer {
-    width: 25px;
-    height: 20px;
 }
 
 .salmon {
@@ -32,14 +23,17 @@
     color: aqua;
 }
 
-.big-size {
-    color: salmon;
-    font-size: 25px;
+.spin {
+    -webkit-animation: spin 1s 1 ease-in-out;
 }
 
-.inline-block{
-    display: inline-block;
-    height: 100px;
+@-webkit-keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .seekBase {
@@ -49,9 +43,53 @@
 
 /* The flowing styles covers the default style of the playlist and volume bar*/
 
+.playlist-tooltip {
+    /*width: 300px;*/
+    opacity: 0.4;
+    border-radius: 5px;
+    background: salmon;
+    color: #000;
+    font-size: 14px;
+}
+
+.playlist a {
+    color: dimgray;
+}
+
+.playlist-header {
+    /*height: 20px;*/
+    font-size: 16px;
+    text-align: justify;
+    padding: 5px 10px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a, tr {
+    cursor: pointer;
+}
+
+.song-index {
+    padding-left: 10px !important;
+}
+
+.song-time {
+    padding-right: 10px !important;
+}
+
+.wave {
+    position: relative;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    background: transparent url("../images/wave.gif") no-repeat 0 6px;
+}
+
 .volumeBar {
     /*position: relative;*/
-    top: -62px !important;
+    top: -42px !important;
 }
 
 .tooltip.top  .tooltip-arrow {
@@ -64,10 +102,16 @@
     border-right-color: transparent;
 }
 
+.inline-block{
+    display: inline-block;
+    height: 100px;
+}
+
 .tooltip-inner {
+    max-width: 400px;
     background: transparent;
     color: #000;
-    //border: none;
+    opacity: 0.8;
 }
 
 .jslider-pointer {
@@ -93,8 +137,8 @@
 }
 
 .jslider.vertical div.jslider-bg i.default {
-    /*height: 0;*/
-    display: none;
+    height: 0;
+    /*display: none;*/
 }
 
 .jslider.vertical div.jslider-bg i.before {
@@ -115,10 +159,3 @@
     height: 0;
 }
 
-a:hover {
-    text-decoration: none;
-}
-
-li {
-	cursor: pointer;
-}
