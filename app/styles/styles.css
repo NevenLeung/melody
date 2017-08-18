@@ -1,12 +1,122 @@
 .seekBase {
-  height: 30px;
-  width: 90%;
-  border: 1px solid #cccccc;
+    display: inline-block;
+    height: 5px;
+    width: 40%;
+    border: 1px solid #cccccc;
 }
+
 .seekLoad {
-	height: 30px;
-  width: 0;
-  background-color: #E0EAF1;
+    /*/display: flex;*/
+	height: 3px;
+    width: 0;
+    background-color: salmon;
+    /*background-color: #E0EAF1;*/
+}
+
+.no-border {
+    border: none;
+    background: transparent;
+}
+
+.longer {
+    width: 25px;
+    height: 20px;
+}
+
+.salmon {
+    margin: 20px;
+    color: salmon;
+}
+
+.functionOff {
+    color: aqua;
+}
+
+.big-size {
+    color: salmon;
+    font-size: 25px;
+}
+
+.inline-block{
+    display: inline-block;
+    height: 100px;
+}
+
+.seekBase {
+    position: relative;
+    top: -5px;
+}
+
+/* The flowing styles covers the default style of the playlist and volume bar*/
+
+.volumeBar {
+    /*position: relative;*/
+    top: -62px !important;
+}
+
+.tooltip.top  .tooltip-arrow {
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.tooltip.right  .tooltip-arrow {
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.tooltip-inner {
+    background: transparent;
+    color: #000;
+    //border: none;
+}
+
+.jslider-pointer {
+    /*position: relative !important;*/
+    /*top: -10px !important;*/
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 8px !important;
+    background: salmon !important;
+}
+
+.jslider-label {
+    display: none !important;
+}
+
+.jslider-value {
+    /*display: none !important;*/
+    background: transparent !important;
+}
+
+.jslider.vertical div.jslider-bg i {
+    background: silver !important;
+}
+
+.jslider.vertical div.jslider-bg i.default {
+    /*height: 0;*/
+    display: none;
+}
+
+.jslider.vertical div.jslider-bg i.before {
+    display: none;
+}
+
+.jslider.vertical div.jslider-bg i.after {
+    display: none;
+}
+
+.jslider.vertical div.jslider-bg i.left {
+    /*poistion: relative;*/
+    top: 5px;
+    height: 100%;
+}
+
+.jslider.vertical div.jslider-bg i.right{
+    height: 0;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 li {

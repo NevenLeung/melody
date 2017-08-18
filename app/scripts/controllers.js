@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('Melody')
-    .controller('playerCtrl', ['$scope' ,function ($scope) {
+    .controller('playerCtrl', ['$scope', 'angularPlayer', function ($scope, angularPlayer) {
         $scope.songs = [
             // {
             //     id: 1,
@@ -31,7 +31,8 @@ angular.module('Melody')
                 id: 1,
                 title: 'SHIROBAKO',
                 artist: 'Unknown',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SHIROBAKO.mp3'
+                url: 'http://localhost:3000/confusion-bootstrap/music/SHIROBAKO.mp3',
+                favorite: true
             },
             {
                 id: 2,
@@ -46,6 +47,27 @@ angular.module('Melody')
                 url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3'
             }
         ];
+
+        // For the play pause toggle button
+        $scope.playIcon = '<span class="fa fa-2x fa-play salmon"></span>';
+        $scope.pauseIcon = '<span class="fa fa-2x fa-pause salmon"></span>';
+
+        // the volume slider control
+
+        $scope.sliderOptions = {
+            from: 100,
+            to: 0,
+            step: 10,
+            vertical: true,
+            callback: function (value) {
+                // To adjust the volume
+                angularPlayer.adjustVolumeSlider(value);
+            }
+        };
+
+        $scope.toggleFavorite = function () {
+            return $scope.currentPlaying.favorite = !$scope.currentPlaying.favorite;
+        };
 
         $scope.isOpen = false;
     }])

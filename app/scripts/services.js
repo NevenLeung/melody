@@ -4,4 +4,4 @@
 'use strict';
 
 angular.module('Melody')
-    .factory()
+    .factory('')

@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap'])
-    .config(function ($stateProvider, $urlRouterProvider) {
+angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider'])
+    .config(function ($stateProvider, $urlRouterProvider, $uibTooltipProvider) {
         $stateProvider
 
         // route for the index.html
@@ -31,4 +31,7 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
             });
 
         $urlRouterProvider.otherwise('/');
+
+        // $uibTooltipProvider.options({placement: "bottom-right"});
+        $uibTooltipProvider.setTriggers({'mouseenter': 'outsideClick'});
     });
