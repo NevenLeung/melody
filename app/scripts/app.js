@@ -11,6 +11,10 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
             .state('app', {
                 url: '/',
                 views: {
+                    'player': {
+                        templateUrl: 'views/player.html',
+                        controller: 'playerCtrl'
+                    },
                     'header': {
                         templateUrl: 'views/header.html',
                         // controller: ''
@@ -18,15 +22,7 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                     // 'content': {
                     //     templateUrl: '',
                     //     // controller: ''
-                    // },
-                    // 'playlist': {
-                    //     templateUrl: '',
-                    //     // controller: ''
-                    // },
-                    'player': {
-                        templateUrl: 'views/player.html',
-                        controller: 'playerCtrl'
-                    }
+                    // }
                 }
             });
 

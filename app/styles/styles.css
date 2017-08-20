@@ -1,7 +1,30 @@
-.seekBase {
-    display: inline-block;
-    height: 5px;
+.player {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.player-bg {
+    background: #eeeeee;
+    transition: background 1s linear;
+}
+
+.player-bg:hover {
+    background: #feeeee;
+}
+
+.song-progress {
     width: 40%;
+    display: inline-block;
+    position: relative;
+    top: -10px;
+    color: salmon;
+    font-size: 16px;
+}
+
+.seekBase {
+    /*display: inline-block;*/
+    height: 5px;
+    /*width: 40%;*/
     border: 1px solid #cccccc;
     cursor: pointer;
 }
@@ -43,8 +66,23 @@
 
 /* The flowing styles covers the default style of the playlist and volume bar*/
 
+.playlist-sidebar {
+    width: 29px;
+    height: 100%;
+    position: fixed;
+    background: #eeeeee;
+    z-index: 1000;
+}
+
+.playlist-icon {
+    height: 100%;
+    display: flex;
+    padding-top: 160px;
+    color: salmon;
+}
+
 .playlist-tooltip {
-    /*width: 300px;*/
+    top: 150px !important;
     opacity: 0.4;
     border-radius: 5px;
     background: salmon;
@@ -56,11 +94,61 @@
     color: dimgray;
 }
 
+.playlist {
+    margin: 0 -8px;
+    max-height: 250px;
+    overflow: scroll;
+    /*overflow-x: hidden;*/
+    /*overflow-y: scroll;*/
+}
+
 .playlist-header {
     /*height: 20px;*/
     font-size: 16px;
     text-align: justify;
     padding: 5px 10px;
+}
+
+.playlist-group {
+    text-align: left;
+}
+
+/* to limit the length of song info */
+.song-info {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.playlist-item .song-ctrl {
+    visibility: hidden;
+    white-space: nowrap;
+}
+
+.playlist-item:hover .song-ctrl {
+    visibility: visible;
+}
+
+/* playlist scroll bar */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 0;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+::-webkit-scrollbar-track {
+    background: salmon;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #dddddd;
+    opacity: 0.5;
 }
 
 a:hover {
@@ -72,11 +160,11 @@ a, tr {
 }
 
 .song-index {
-    padding-left: 10px !important;
+    padding-left: 15px !important;
 }
 
 .song-time {
-    padding-right: 10px !important;
+    padding-right: 15px !important;
 }
 
 .wave {
@@ -89,15 +177,15 @@ a, tr {
 
 .volumeBar {
     /*position: relative;*/
-    top: -42px !important;
+    top: -105px !important;
 }
 
-.tooltip.top  .tooltip-arrow {
+.tooltip.top .tooltip-arrow {
     border-top-color: transparent;
     border-right-color: transparent;
 }
 
-.tooltip.right  .tooltip-arrow {
+.tooltip.right .tooltip-arrow {
     border-top-color: transparent;
     border-right-color: transparent;
 }
@@ -108,10 +196,16 @@ a, tr {
 }
 
 .tooltip-inner {
-    max-width: 400px;
+    /*max-height: 250px;*/
+    max-width: 450px;
+    /*overflow: scroll;*/
     background: transparent;
     color: #000;
     opacity: 0.8;
+}
+
+.tooltip.right {
+    padding: 0;
 }
 
 .jslider-pointer {
@@ -158,4 +252,3 @@ a, tr {
 .jslider.vertical div.jslider-bg i.right{
     height: 0;
 }
-

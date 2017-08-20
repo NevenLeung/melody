@@ -40,14 +40,72 @@ angular.module('Melody')
                 title: 'TREASURE BOX',
                 artist: '奥井雅美',
                 url: 'http://localhost:3000/confusion-bootstrap/music/奥井雅美 - 宝箱-TREASURE BOX- (TVアニメ『SHIROBAKO』OPテーマ).mp3',
-                time: '3:50'
+                time: '3:50',
+                favorite: false
             },
             {
                 id: 3,
                 title: 'COLORFUL BOX',
                 artist: '石田燿子',
                 url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3',
-                time: '3:59'
+                time: '3:59',
+                favorite: false
+            },
+            {
+                id: 4,
+                title: 'Coming Home',
+                artist: 'Diddy & Skylar Grey',
+                url: 'http://localhost:3000/confusion-bootstrap/music/Diddy、Skylar Grey - Coming Home.mp3',
+                time: '3:59',
+                favorite: false
+            },
+            {
+                id: 5,
+                title: '新世界',
+                artist: 'SiS乐印姊妹',
+                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
+                time: '4:03',
+                favorite: false
+            },
+            {
+                id: 6,
+                title: 'きみのこえ',
+                artist: '川嶋あい',
+                url: 'http://localhost:3000/confusion-bootstrap/music/川嶋あい - きみのこえ.mp3',
+                time: '5:39',
+                favorite: false
+            },
+            {
+                id: 7,
+                title: '新世界',
+                artist: 'SiS乐印姊妹',
+                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
+                time: '4:03',
+                favorite: false
+            },
+            {
+                id: 8,
+                title: '新世界',
+                artist: 'SiS乐印姊妹',
+                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
+                time: '4:03',
+                favorite: false
+            },
+            {
+                id: 9,
+                title: '新世界',
+                artist: 'SiS乐印姊妹',
+                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
+                time: '4:03',
+                favorite: false
+            },
+            {
+                id: 10,
+                title: '新世界',
+                artist: 'SiS乐印姊妹',
+                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
+                time: '4:03',
+                favorite: false
             }
         ];
 
@@ -72,10 +130,10 @@ angular.module('Melody')
             return $scope.currentPlaying.favorite = !$scope.currentPlaying.favorite;
         };
 
-        $scope.clickIndex = function (song) {
-            console.log($scope.playlist);
-            console.log(angularPlayer.getIndexByValue($scope.playlist, song));
-        };
+        // $scope.clickIndex = function (song) {
+        //     console.log($scope.playlist);
+        //     console.log(angularPlayer.getIndexByValue($scope.playlist, song));
+        // };
         
         $scope.spinIcon = function () {
             $scope.spinner = true;
