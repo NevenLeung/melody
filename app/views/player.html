@@ -17,13 +17,13 @@
                     <!-- init soundManager2 player -->
                     <sound-manager></sound-manager>
                     <a prev-track title="last track">
-                        <i class="fa fa-2x fa-step-backward salmon" prev-track></i>
+                        <i class="fa fa-2x fa-step-backward player-icon" prev-track></i>
                     </a>
                     <a play-pause-toggle data-play={{playIcon}} data-pause={{pauseIcon}} title="play/pause">
-                        <span class="fa fa-2x fa-play salmon"></span>
+                        <span class="fa fa-2x fa-play player-icon"></span>
                     </a>
                     <a next-track title="next track">
-                        <span class="fa fa-2x fa-step-forward salmon"></span>
+                        <span class="fa fa-2x fa-step-forward player-icon"></span>
                     </a>
                     <!-- the progress bar -->
                     <div class="song-progress">
@@ -34,16 +34,16 @@
                         </div>
                     </div>
                     <a title="add to favorite - the solid heart means the song added!" ng-click="toggleFavorite(currentPlaying)">
-                        <span class="fa fa-2x salmon" ng-class="{'fa-heart': currentPlaying.favorite, 'fa-heart-o': !currentPlaying.favorite}"></span>
+                        <span class="fa fa-2x player-icon" ng-class="{'fa-heart': currentPlaying.favorite, 'fa-heart-o': !currentPlaying.favorite}"></span>
                     </a>
-                    <a title="repeat - the same color as the button means function is on!">
-                        <span class="fa fa-2x fa-repeat salmon" ng-class="{'functionOff': !repeat}" repeat-music></span>
+                    <a title="playlist repeat - the same color as other button means function is on!">
+                        <span class="fa fa-2x fa-repeat player-icon" ng-class="{'functionOff': !repeat}" repeat-music></span>
                     </a>
                     <a title="volume">
-                        <span class="fa fa-2x fa-volume-up salmon" uib-tooltip-template="'views/volumeBar.html'" tooltip-class="volumeBar" tooltip-trigger="'mouseenter'" tooltip-placement="top"></span>
+                        <span class="fa fa-2x fa-volume-up player-icon" uib-tooltip-template="'views/volumeBar.html'" tooltip-class="volumeBar" tooltip-trigger="'mouseenter'" tooltip-placement="top"></span>
                     </a>
                     <a title="To get 5 random songs">
-                        <span class="fa fa-2x fa-spinner salmon" ng-class="{'spin': spinner}" ng-click="spinIcon()"></span>
+                        <span class="fa fa-2x fa-spinner player-icon" ng-class="{'spin': spinner}" ng-click="spinIcon()"></span>
                     </a>
                 </div>
             </div>

@@ -110,8 +110,8 @@ angular.module('Melody')
         ];
 
         // For the play pause toggle button
-        $scope.playIcon = '<span class="fa fa-2x fa-play salmon"></span>';
-        $scope.pauseIcon = '<span class="fa fa-2x fa-pause salmon"></span>';
+        $scope.playIcon = '<span class="fa fa-2x fa-play player-icon"></span>';
+        $scope.pauseIcon = '<span class="fa fa-2x fa-pause player-icon"></span>';
 
         // the volume slider control
 
@@ -143,4 +143,9 @@ angular.module('Melody')
         };
 
         $scope.isOpen = false;
+    }])
+    .controller('homeCtrl', ['$scope', function ($scope) {
+
+
+
     }])

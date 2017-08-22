@@ -1,15 +1,57 @@
+body {
+    /*background: #F2F5F7;*/
+}
+
+/* the nav bar styles*/
+
+.inline-block {
+    display: inline-block !important;
+}
+
+.navbar-brand {
+    padding: 5px 15px 13px 15px;
+}
+.navbar-brand>img {
+    display: inline-block;
+}
+
+.nav>li>a {
+    padding: 15px;
+}
+
+.avatar {
+    padding: 10px 0 0 0 !important;
+}
+
+.position-center {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-box {
+    display: flex;
+    /*height: 400px;*/
+    /*width: 300px;*/
+}
+
+.song-basic-info {
+    margin: auto;
+    text-align: center;
+}
+
 .player {
     width: 80%;
     margin: 0 auto;
 }
 
 .player-bg {
-    background: #eeeeee;
-    transition: background 1s linear;
+    background: #feeeee;
+    transition: all 0.3s linear;
 }
 
 .player-bg:hover {
-    background: #feeeee;
+    background: #3c3c3c;
+    /*background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);*/
 }
 
 .song-progress {
@@ -37,7 +79,7 @@
     /*background-color: #E0EAF1;*/
 }
 
-.salmon {
+.player-icon {
     margin: 20px;
     color: salmon;
 }
@@ -70,8 +112,13 @@
     width: 29px;
     height: 100%;
     position: fixed;
-    background: #eeeeee;
+    background: transparent;
     z-index: 1000;
+}
+
+.playlist-sidebar:hover {
+    background: #feeeee;
+    transition: background 0.5s linear;
 }
 
 .playlist-icon {
@@ -79,6 +126,10 @@
     display: flex;
     padding-top: 160px;
     color: salmon;
+}
+
+.playlist-icon:hover {
+    color: darksalmon;
 }
 
 .playlist-tooltip {

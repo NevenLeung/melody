@@ -19,10 +19,10 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                         templateUrl: 'views/header.html',
                         // controller: ''
                     },
-                    // 'content': {
-                    //     templateUrl: '',
-                    //     // controller: ''
-                    // }
+                    'content': {
+                        templateUrl: 'views/home.html',
+                        controller: 'homeCtrl'
+                    }
                 }
             });
 
