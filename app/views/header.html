@@ -6,35 +6,39 @@
                 Melody
             </a>
         </div>
-        <ul class="nav navbar-nav">
-            <li>
-                <a>Home</a>
+        <ul class="nav navbar-nav nav-center position-center">
+            <li class="nav-item">
+                <a ui-sref="app">Home</a>
             </li>
-            <li>
-                <a>Personal Center</a>
+            <li class="nav-item">
+                <a ui-sref="app.artist({id:1})">artist</a>
             </li>
-            <li>
-                <a>About</a>
+            <li class="nav-item">
+                <a ui-sref="app.personal">Personal Center</a>
+            </li>
+            <li class="nav-item">
+                <a ui-sref="app.about">About</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li>
+            <li ng-if="isLogin">
                 <a class="avatar">
-                    <img src="images/avatar001.jpg" alt="avatar" width="30px" height="30px">
+                    <img ng-src="{{avatar}}" alt="avatar" width="30px" height="30px">
                 </a>
             </li>
-            <li class="">
-                <a>
+            <li  ng-if="isLogin">
+                <a ui-sref="app.user({id: 1})">
                     <span>username</span>
                 </a>
             </li>
-            <!--<li>-->
-                <!--<a>-->
-                    <!--<span class="fa fa-sign-out"></span> Sign out-->
-                <!--</a>-->
-            <!--</li>-->
-            <button class="nav navbar-btn btn btn-danger">
+            <button class="nav navbar-btn btn btn-danger"  ng-if="isLogin" ng-click="doLogout()">
                 &nbsp;&nbsp;<span class="fa fa-sign-out"></span> Sign out
+            </button>
+            <button class="nav navbar-btn btn btn-success" ng-if="!isLogin" ng-click="openRegisterModal()">
+                &nbsp;&nbsp;Sign Up
+            </button>
+            <button class="nav navbar-btn btn btn-primary" ng-if="!isLogin" ng-click="openLoginModal()">
+                &nbsp;&nbsp;<span class="fa fa-sign-in"></span> Sign In
             </button>
         </ul>
     </div>

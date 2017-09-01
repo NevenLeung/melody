@@ -4,4 +4,7 @@
 'use strict';
 
 angular.module('Melody')
-    .factory('')
+    .factory('uploadFactory', ['$resource', function ($resource) {
+
+        return $resource('https://sm.ms/api/upload', null);
+    }])

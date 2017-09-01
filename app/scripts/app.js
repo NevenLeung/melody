@@ -3,8 +3,12 @@
  */
 'use strict';
 
-angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider', 'angular-sortable-view'])
+angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider', 'angular-sortable-view', 'xeditable'])
     .config(function ($stateProvider, $urlRouterProvider, $uibTooltipProvider) {
+
+        // $uibTooltipProvider.options({placement: "bottom-right"});
+        $uibTooltipProvider.setTriggers({'mouseenter': 'outsideClick'});
+
         $stateProvider
 
         // route for the index.html
@@ -13,21 +17,60 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                 views: {
                     'player': {
                         templateUrl: 'views/player.html',
-                        controller: 'playerCtrl'
+                        controller: 'PlayerCtrl'
                     },
                     'header': {
                         templateUrl: 'views/header.html',
-                        // controller: ''
+                        controller: 'HeaderCtrl'
                     },
                     'content': {
                         templateUrl: 'views/home.html',
-                        controller: 'homeCtrl'
+                        controller: 'HomeCtrl'
+                    }
+                }
+            })
+
+            .state('app.personal', {
+                url: 'personal',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/personal-center.html',
+                        controller: 'PersonalCtrl'
+                    }
+                }
+            })
+
+            .state('app.user', {
+                url: 'user/:id',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/user-info.html',
+                        controller: 'UserCtrl'
+                    }
+                }
+            })
+
+            .state('app.artist', {
+                url: 'artist/:id',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/artist.html',
+                        controller: 'ArtistCtrl'
+                    }
+                }
+            })
+
+            .state('app.about', {
+                url: 'about',
+                views: {
+                    'content@': {
+                        templateUrl:'views/about.html'
                     }
                 }
             });
 
+
         $urlRouterProvider.otherwise('/');
 
-        // $uibTooltipProvider.options({placement: "bottom-right"});
-        $uibTooltipProvider.setTriggers({'mouseenter': 'outsideClick'});
+
     });

@@ -2,7 +2,25 @@ body {
     /*background: #F2F5F7;*/
 }
 
+.color-salmon {
+    color: salmon;
+}
+
+.color-salmon:hover {
+    color: salmon;
+}
+
 /* the nav bar styles*/
+
+.nav-center {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.nav-item {
+    margin: 0 30px;
+    font-size: 16px;
+}
 
 .inline-block {
     display: inline-block !important;
@@ -23,6 +41,33 @@ body {
     padding: 10px 0 0 0 !important;
 }
 
+/* the modal styles */
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    top: -100px;
+}
+
+.avatar-select-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.select-avatar > input {
+    visibility: hidden;
+    position: absolute;
+}
+
+.select-avatar > input + img {
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.select-avatar > input:checked + img {
+    border: 2px solid salmon;
+}
+
+/* the home page styles */
+
 .position-center {
     display: flex;
     justify-content: center;
@@ -38,6 +83,110 @@ body {
     margin: auto;
     text-align: center;
 }
+
+/* artist page */
+
+.artist-wrapper {
+    margin-top: 40px;
+}
+
+.artist-name {
+    width: 300px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 16px;
+}
+
+.artist-info {
+    text-align: justify;
+}
+
+.artist-info-text {
+    text-indent: 20px;
+}
+
+/* user page and personal page */
+.user-wrapper {
+    margin-top: 20px;
+}
+
+.user-info-wrapper {
+    margin-top: 70px;
+}
+
+.user-info-text {
+    width: 150px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 16px;
+}
+
+.user-info-text input, textarea {
+    width: 150px;
+    font-size: 14px;
+}
+
+.user-favList-header {
+    background: salmon;
+}
+
+.user-favList-wrapper {
+    max-height: 250px;
+    margin: 0 -8px;
+    overflow-y: scroll;
+    border-radius: 5px;
+}
+
+.user-favList {
+    background: #efefef;
+    text-align: left;
+    color: salmon;
+}
+
+.user-favList a {
+    color: salmon;
+}
+
+.user-favList a:hover {
+    color: #e97046;
+}
+
+/* nav tab */
+.row .nav-item {
+    font-size: 14px;
+}
+
+.personal-info-wrapper {
+    /*margin: 20px 0 0 120px;*/
+}
+
+.personal-avatar {
+    margin-top: 70px;
+}
+
+.personal-info {
+    margin-top: 90px;
+}
+
+.personal-info-form {
+    margin-top: -40px;
+}
+
+.personal-info-text {
+    display: inline-block;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 16px;
+}
+
+/*.user-favList-wrapper::-webkit-scrollbar-thumb {*/
+    /*border-radius: 2px;*/
+    /*!*background: #1da1f2;*!*/
+    /*opacity: 0.5;*/
+/*}*/
+
+
+/* player styles */
 
 .player {
     width: 80%;
@@ -146,9 +295,10 @@ body {
 }
 
 .playlist {
-    margin: 0 -8px;
     max-height: 250px;
+    margin: 0 -8px;
     overflow: scroll;
+    border-radius: 5px;
     /*overflow-x: hidden;*/
     /*overflow-y: scroll;*/
 }
@@ -179,6 +329,12 @@ body {
 
 .playlist-item:hover .song-ctrl {
     visibility: visible;
+}
+
+/* overwrite bootstrap style*/
+
+.table {
+    margin-bottom: 0;
 }
 
 /* playlist scroll bar */
@@ -241,7 +397,7 @@ a, tr {
     border-right-color: transparent;
 }
 
-.inline-block{
+.volumeBar-inline-block{
     display: inline-block;
     height: 100px;
 }

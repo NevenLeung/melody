@@ -9,8 +9,8 @@
         <table class="table table-hover table-condensed" sv-root sv-part="playlist">
             <tr ng-repeat="song in playlist" class="playlist-item" sv-element  play-from-playlist="song">
                 <td class="song-index">
-                    <span ng-show="!(currentPlaying.id == song.id)">{{playlist.indexOf(song) + 1}}</span>
-                    <span ng-if="currentPlaying.id == song.id" class="wave">&nbsp;&nbsp;&nbsp;</span>
+                    <span ng-if="!isPlaying || !(currentPlaying.id == song.id)">{{playlist.indexOf(song) + 1}}</span>
+                    <span ng-if="currentPlaying.id == song.id && isPlaying" class="wave">&nbsp;&nbsp;&nbsp;</span>
                 </td>
                 <td class="song-info">
                     <a>{{ song.title }}</a>
