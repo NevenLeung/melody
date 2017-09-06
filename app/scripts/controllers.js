@@ -215,7 +215,99 @@ angular.module('Melody')
 
     .controller('HomeCtrl', ['$scope', function ($scope) {
 
+        $scope.musicName = 'SHIROBAKO insert music';
+        $scope.albumName = 'Unknow';
         $scope.albumPhoto = "images/album/shirobako.jpg";
+        $scope.singerName = 'Unknow';
+
+
+
+    }])
+
+    .controller('SongCtrl', ['$scope', '$stateParams', 'commentFactory', function ($scope, $stateParams, commentFactory) {
+
+        $scope.musicName = 'SHIROBAKO insert music';
+        $scope.albumName = 'Unknow';
+        $scope.albumPhoto = "images/album/shirobako.jpg";
+        $scope.singerName = 'Unknow';
+
+        // $scope.comments = [
+        //     {
+        //         username: 'Michael King',
+        //         avatar: '019.jpg',
+        //         comment: "It's great actually!",
+        //         time: new Date()
+        //     },
+        //     {
+        //         username: 'Tracy Howard',
+        //         avatar: '005.jpg',
+        //         comment: "It's great actually!",
+        //         time: new Date()
+        //     },
+        //     {
+        //         username: 'David Ford',
+        //         avatar: '007.jpg',
+        //         comment: "It's great actually!",
+        //         time: new Date()
+        //     },
+        //     {
+        //         username: 'Christina Jones',
+        //         avatar: '010.jpg',
+        //         comment: "It's great actually!",
+        //         time: new Date()
+        //     },
+        //     {
+        //         username: 'Taylor Elizabeth',
+        //         avatar: '017.jpg',
+        //         comment: "It's great actually!",
+        //         time: new Date()
+        //     }
+        // ];
+
+        commentFactory.total.query(
+            function (response) {
+                $scope.totalItems = response.length;
+            },
+            function (err) {
+                console.log(err);
+            }
+        );
+
+        $scope.currentPage = 1;
+        $scope.itemsPerPage = 5;
+
+        $scope.maxSize = 5;
+
+        commentFactory.page.query({pageNum:$scope.currentPage})
+            .$promise.then(
+                function (response) {
+                    $scope.comments = response;
+                },
+                function (err) {
+                    console.log(err);
+                }
+        );
+
+        $scope.pageChange = function () {
+            commentFactory.page.query({pageNum:$scope.currentPage})
+                .$promise.then(
+                function (response) {
+                    $scope.comments = response;
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+        };
+        $scope.list = commentFactory.total.query();
+        // $scope.list = commentFactory.total.query({pageNum:$scope.currentPage});
+
+
+        // console.log($stateParams);
+        console.log($scope.list);
+        console.log($scope.totalItems);
+
+
 
 
     }])

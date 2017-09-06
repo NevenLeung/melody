@@ -30,6 +30,16 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                 }
             })
 
+            .state('app.song', {
+                url: 'song/:id',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/song-info.html',
+                        controller: 'SongCtrl'
+                    }
+                }
+            })
+
             .state('app.personal', {
                 url: 'personal',
                 views: {
@@ -68,7 +78,6 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                     }
                 }
             });
-
 
         $urlRouterProvider.otherwise('/');
 

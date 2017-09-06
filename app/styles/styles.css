@@ -2,6 +2,15 @@ body {
     /*background: #F2F5F7;*/
 }
 
+hr {
+    margin: 0;
+}
+
+
+.div-inner-center {
+    margin: 0 auto;
+}
+
 .color-salmon {
     color: salmon;
 }
@@ -184,6 +193,23 @@ body {
     /*!*background: #1da1f2;*!*/
     /*opacity: 0.5;*/
 /*}*/
+
+/* song page */
+.text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-overflow:hover {
+    overflow: visible;
+}
+
+.user-img-center {
+    height: 70px;
+    margin: 0 auto;
+}
+
 
 
 /* player styles */
