@@ -2,14 +2,20 @@
     <div class="row position-center artist-wrapper">
         <div class="col-md-4 col-md-offset-2">
             <img ng-src='{{artistPhoto}}' alt="artist photo" width="300px">
-            <p class="artist-name">{{artistName}}</p>
+            <p class="artist-name artist-info-text">{{artistName}}</p>
         </div>
-        <div class="col-md-4 flex-box">
-            <div class="artist-info">
+        <div class="col-md-7 flex-box" style="margin-top: -50px;">
+            <div class="artist-info text-justify">
                 <h3>Introduction</h3>
-                <p class="artist-info-text">{{introduction}}</p>
+                <pre class="artist-info-text">{{introduction}}</pre>
+                <!--<p class="artist-info-text">-->
+                    <!--&lt;!&ndash;{{introduction}}&ndash;&gt;-->
+                <!--</p>-->
                 <h3>Recommended song</h3>
-                <p class="artist-info-text">{{recommended}}</p>
+                <pre class="artist-info-text">{{recommended}}</pre>
+                <!--<p class="artist-info-text">-->
+                    <!--{{recommended}}-->
+                <!--</p>-->
             </div>
         </div>
     </div>

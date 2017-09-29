@@ -4,118 +4,15 @@
 'use strict';
 
 angular.module('Melody')
-    .controller('PlayerCtrl', ['$scope', 'angularPlayer', '$timeout', function ($scope, angularPlayer, $timeout) {
+    .controller('PlayerCtrl', ['$scope', 'angularPlayer', '$timeout', '$rootScope', 'songFactory', function ($scope, angularPlayer, $timeout, $rootScope, songFactory) {
 
-        $scope.songs = [
-            // {
-            //     id: 1,
-            //     title: 'Take My Hand',
-            //     artist: 'Simple Plan',
-            //     url: 'http://ws.stream.qqmusic.qq.com/425607.m4a'
-            // },
-            // {
-            //     id: 2,
-            //     title: 'Saturday',
-            //     artist: 'Simple Plan',
-            //     url: 'http://ws.stream.qqmusic.qq.com/102695318.m4a'
-            // },
-            // {
-            //     id: 3,
-            //     title: 'Jet Lag',
-            //     artist: 'Simple Plan',
-            //     url: 'http://ws.stream.qqmusic.qq.com/104796357.m4a'
-            // }
-
-            // The links above in qqmusic are unable, so I use json-server to serve local music file to test.
-
-            {
-                id: 1,
-                title: 'SHIROBAKO',
-                artist: 'Unknown',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SHIROBAKO.mp3',
-                time: '3:08',
-                favorite: true
-            },
-            {
-                id: 2,
-                title: 'TREASURE BOX',
-                artist: '奥井雅美',
-                url: 'http://localhost:3000/confusion-bootstrap/music/奥井雅美 - 宝箱-TREASURE BOX- (TVアニメ『SHIROBAKO』OPテーマ).mp3',
-                time: '3:50',
-                favorite: false
-            },
-            {
-                id: 3,
-                title: 'COLORFUL BOX',
-                artist: '石田燿子',
-                url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3',
-                time: '3:59',
-                favorite: false
-            },
-            {
-                id: 4,
-                title: 'Coming Home',
-                artist: 'Diddy & Skylar Grey',
-                url: 'http://localhost:3000/confusion-bootstrap/music/Diddy、Skylar Grey - Coming Home.mp3',
-                time: '3:59',
-                favorite: false
-            },
-            {
-                id: 5,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 6,
-                title: 'きみのこえ',
-                artist: '川嶋あい',
-                url: 'http://localhost:3000/confusion-bootstrap/music/川嶋あい - きみのこえ.mp3',
-                time: '5:39',
-                favorite: false
-            },
-            {
-                id: 7,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 8,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 9,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 10,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            }
-        ];
+        refreshPlaylist();
 
         // For the play pause toggle button
         $scope.playIcon = '<span class="fa fa-2x fa-play player-icon"></span>';
         $scope.pauseIcon = '<span class="fa fa-2x fa-pause player-icon"></span>';
 
         // the volume slider control
-
         $scope.sliderOptions = {
             from: 100,
             to: 0,
@@ -124,6 +21,7 @@ angular.module('Melody')
             callback: function (value) {
                 // To adjust the volume
                 angularPlayer.adjustVolumeSlider(value);
+                // $scope.volume = value;
             }
         };
 
@@ -137,6 +35,14 @@ angular.module('Melody')
         // };
         
         $scope.spinIcon = function () {
+            angularPlayer.stop();
+            angularPlayer.setCurrentTrack(null);
+
+            angularPlayer.clearPlaylist(function () {
+                // console.log('Playlist is clear.');
+            });
+
+            $timeout(refreshPlaylist, 200);
             $scope.spinner = true;
             $timeout(function () {
                 $scope.spinner = false
@@ -144,6 +50,49 @@ angular.module('Melody')
         };
 
         $scope.isOpen = false;
+
+        //console.log($scope.currentPlaying);
+        $scope.changeSong = function () {
+            $rootScope.$broadcast('songChange', $scope.currentPlaying);
+        };
+
+        $rootScope.$on('player:playlist', function (event, data) {
+            if (data.length === 0) {
+                $scope.displayInfo = false;
+            }
+        });
+
+        function random(n) {
+            return Math.floor(Math.random() * n);
+        }
+
+        function refreshPlaylist() {
+            songFactory.song.query(
+                function (response) {
+                    // To generate 5 random songs from database
+                    var unique = {};
+                    for( var i = 0; Object.keys(unique).length < 34; i++) {
+                        // To make the song unique
+                        unique[JSON.stringify(response[random(response.length)])] = i;
+                    }
+                    $scope.songs = Object.keys(unique).map(function (str) {
+                        return JSON.parse(str);
+                    });
+                    // To add the songs to playlist
+                    angular.forEach($scope.songs, function (value) {
+                        angularPlayer.addTrack(value);
+                    });
+                    angularPlayer.play();
+                    $rootScope.$broadcast('songChange');
+
+                    // the current playing info display flag
+                    $scope.displayInfo = true;
+                },
+                function (err) {
+                    console.log(err);
+                }
+            );
+        }
     }])
 
     .controller('HeaderCtrl', ['$scope', 'ngDialog', '$rootScope', function ($scope, ngDialog, $rootScope) {
@@ -213,23 +162,82 @@ angular.module('Melody')
 
     }])
 
-    .controller('HomeCtrl', ['$scope', function ($scope) {
+    .controller('HomeCtrl', ['$scope', 'angularPlayer', '$rootScope', '$timeout', function ($scope, angularPlayer, $rootScope, $timeout) {
 
-        $scope.musicName = 'SHIROBAKO insert music';
-        $scope.albumName = 'Unknow';
-        $scope.albumPhoto = "images/album/shirobako.jpg";
-        $scope.singerName = 'Unknow';
+        $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
 
+        // $scope.musicName = 'SHIROBAKO insert music';
+        // $scope.albumName = 'Unknow';
+        // $scope.albumPhoto = "images/album/shirobako.jpg";
+        // $scope.singerName = 'Unknow';
 
+        // console.log(angularPlayer.currentTrackData());
 
+        // $timeout(updateHomeInfo, 200);
+        updateHomeInfo();
+
+        $rootScope.$on('songChange', function (event, data) {
+            // console.log(data);
+            updateHomeInfo();
+        });
+
+        $rootScope.$on('track:progress', function (event, data) {
+            // console.log('here');
+            // console.log(data);
+            if (parseInt(data) === 100) {
+                updateHomeInfo();
+            }
+        });
+
+        function updateHomeInfo() {
+            $timeout(function () {
+                // console.log(angularPlayer.currentTrackData());
+                $scope.songID = angularPlayer.currentTrackData().id;
+                $scope.musicName = angularPlayer.currentTrackData().title;
+                $scope.albumName = angularPlayer.currentTrackData().albumName;
+                $scope.albumPhoto = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumPhoto;
+                $scope.singerName = angularPlayer.currentTrackData().artist;
+                $scope.singerID = angularPlayer.currentTrackData().artistID;
+            }, 100)
+        }
     }])
 
-    .controller('SongCtrl', ['$scope', '$stateParams', 'commentFactory', function ($scope, $stateParams, commentFactory) {
+    .controller('SongCtrl', ['$scope', '$stateParams', 'angularPlayer', '$timeout', 'commentFactory', function ($scope, $stateParams, angularPlayer, $timeout, commentFactory) {
 
-        $scope.musicName = 'SHIROBAKO insert music';
-        $scope.albumName = 'Unknow';
-        $scope.albumPhoto = "images/album/shirobako.jpg";
-        $scope.singerName = 'Unknow';
+        // $scope.musicName = 'SHIROBAKO insert music';
+        // $scope.albumName = 'Unknow';
+        // $scope.albumPhoto = "images/album/shirobako.jpg";
+        // $scope.singerName = 'Unknow';
+
+        $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        $scope.commentContent = 'click to comment!';
+        // $timeout(updateSongInfo, 200);
+
+        // Maybe use it to check is data is empty or the user has already commented
+        $scope.checkComment = function (data) {
+            console.log(data);
+        };
+
+        // save the comment to database and make the pager to page number of newest comment
+        $scope.submitComment = function () {
+            console.log('submit comment!');
+            var lastPageNum = Math.ceil($scope.totalItems/$scope.itemsPerPage);
+            $scope.currentPage = lastPageNum;
+            $scope.pageChange();
+        };
+
+        updateSongInfo();
+
+        function updateSongInfo() {
+            $scope.songID = angularPlayer.currentTrackData().id;
+            $scope.musicName = angularPlayer.currentTrackData().title;
+            $scope.albumName = angularPlayer.currentTrackData().albumName;
+            $scope.albumPhoto = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumPhoto;
+            $scope.singerName = angularPlayer.currentTrackData().artist;
+            $scope.singerID = angularPlayer.currentTrackData().artistID;
+        }
+
+
 
         // $scope.comments = [
         //     {
@@ -304,10 +312,11 @@ angular.module('Melody')
 
 
         // console.log($stateParams);
-        console.log($scope.list);
-        console.log($scope.totalItems);
 
-
+        // $timeout(function () {
+        //     console.log($scope.list);
+        //     console.log($scope.totalItems);
+        // }, 500);
 
 
     }])
@@ -519,13 +528,27 @@ angular.module('Melody')
 
     }])
 
-    .controller('ArtistCtrl', ['$scope', function ($scope) {
+    .controller('ArtistCtrl', ['$scope', 'artistFactory', '$stateParams', function ($scope, artistFactory, $stateParams) {
 
-        $scope.artistPhoto = "images/artist/simple-plan.jpg";
-        $scope.artistName = 'Simple plan';
-        $scope.introduction = 'Simple Plan is a Canadian rock band from Montreal, Quebec.Simple Plan \'s style of music has been described as pop punk, alternative rock, pop rock, punk rock, and power pop. Atlantic Records marketing material has described the band \'s style as having "classic punk energy and modern pop sonics". Simple Plan \'s music style has also been described as: "emo".';
-        $scope.recommended = 'Untitled, Take my hand.';
+        // $scope.artistPhoto = "images/artist/simple-plan.jpg";
+        // $scope.artistName = 'Simple plan';
+        // $scope.introduction = 'Simple Plan is a Canadian rock band from Montreal, Quebec.Simple Plan \'s style of music has been described as pop punk, alternative rock, pop rock, punk rock, and power pop. Atlantic Records marketing material has described the band \'s style as having "classic punk energy and modern pop sonics". Simple Plan \'s music style has also been described as: "emo".';
+        // $scope.recommended = 'Untitled, Take my hand.';
 
-    }])
+        $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+
+        artistFactory.get({artistId: $stateParams.id}).$promise.then(
+            function (response) {
+                $scope.artistPhoto = $scope.baseUrl + 'images/artist/' + response.artistPhoto;
+                $scope.artistName = response.artistName;
+                $scope.introduction = response.introduction.replace(/\n/g, '\n\n');
+                $scope.recommended = response.recommended;
+            },
+            function (err) {
+                console.log(err);
+            }
+        )
+
+    }]);
 
 

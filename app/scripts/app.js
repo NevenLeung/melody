@@ -4,6 +4,7 @@
 'use strict';
 
 angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider', 'angular-sortable-view', 'xeditable'])
+
     .config(function ($stateProvider, $urlRouterProvider, $uibTooltipProvider) {
 
         // $uibTooltipProvider.options({placement: "bottom-right"});
@@ -82,4 +83,8 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
         $urlRouterProvider.otherwise('/');
 
 
+    })
+
+    .run(function(editableOptions) {
+        editableOptions.theme = 'bs3';
     });

@@ -31,7 +31,7 @@
                                 <span editable-text="userName" ng-show="userInfoForm.$visible" onbeforesave="checkIsEmpty($data)">{{userName}}</span>
                             </div>
                             <div class="user-info-text">
-                                <span class="title"ng-show="userInfoForm.$visible">Introduction: </span>
+                                <span class="title" ng-show="userInfoForm.$visible">Introduction: </span>
                                 <span editable-textarea="introduction" ng-show="userInfoForm.$visible">{{introduction}}</span>
                             </div>
                             <div class="user-info-text" ng-show="userInfoForm.$visible">
@@ -75,14 +75,14 @@
                                         <a>{{song.artist}}</a>
                                     </td>
                                     <td>
-                        <span class="song-ctrl">
-                            <a music-player="play" add-song="song" title="add to playlist and play it">
-                                <span class="fa fa-play"></span>
-                            </a>
-                            <a ng-click="removeOneFromFav(song)" title="remove this song from favorite list">
-                                <span class="fa fa-trash"></span>
-                            </a>
-                        </span>
+                                        <span class="song-ctrl">
+                                            <a music-player="play" add-song="song" title="add to playlist and play it">
+                                                <span class="fa fa-play"></span>
+                                            </a>
+                                            <a ng-click="removeOneFromFav(song)" title="remove this song from favorite list">
+                                                <span class="fa fa-trash"></span>
+                                            </a>
+                                        </span>
                                     </td>
                                     <td class="song-time">
                                         <a>{{song.time}}</a>

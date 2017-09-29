@@ -6,6 +6,10 @@ hr {
     margin: 0;
 }
 
+pre {
+    white-space: pre-wrap;
+    word-break: keep-all;
+}
 
 .div-inner-center {
     margin: 0 auto;
@@ -111,7 +115,7 @@ hr {
 }
 
 .artist-info-text {
-    text-indent: 20px;
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 }
 
 /* user page and personal page */
@@ -210,7 +214,24 @@ hr {
     margin: 0 auto;
 }
 
+.song-comment::-webkit-scrollbar {
+    width: 8px;
+    height: 0;
+}
 
+.song-comment::-webkit-scrollbar-button {
+    display: none;
+}
+
+.song-comment::-webkit-scrollbar-track {
+    background: #dddddd;
+}
+
+.song-comment::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: salmon;
+    opacity: 0.5;
+}
 
 /* player styles */
 
@@ -230,12 +251,16 @@ hr {
 }
 
 .song-progress {
-    width: 40%;
+    width: 55%;
     display: inline-block;
     position: relative;
     top: -10px;
     color: salmon;
     font-size: 16px;
+}
+
+.song-progress a {
+    color: salmon;
 }
 
 .seekBase {
@@ -379,7 +404,7 @@ hr {
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 2px;
+    border-radius: 4px;
     background: #dddddd;
     opacity: 0.5;
 }

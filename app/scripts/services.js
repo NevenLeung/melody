@@ -11,6 +11,21 @@ angular.module('Melody')
         return $resource('https://sm.ms/api/upload', null);
     }])
 
+    .factory('songFactory', ['$resource', 'baseUrl', function ($resource, baseUrl) {
+
+        return {
+            random: $resource(baseUrl + 'playlist'),
+            song: $resource(baseUrl + 'song/:songId', null, null)
+        };
+
+    }])
+
+    .factory('artistFactory', ['$resource', 'baseUrl', function ($resource, baseUrl) {
+
+        return $resource(baseUrl + 'artist/:artistId', null, null);
+
+    }])
+
     .factory('commentFactory', ['$resource', 'baseUrl', function ($resource, baseUrl) {
 
         return {

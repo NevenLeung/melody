@@ -11,22 +11,27 @@
         <div class="col-md-12 player-bg">
             <!-- The player and the basic controller-->
             <div class="player">
-                <button play-all="songs">Play all</button>
-                <button play-all="songs" data-play="false">Add all</button>
+                <!--<button play-all="songs">Play all</button>-->
+                <!--<button play-all="songs" data-play="false">Add all</button>-->
                 <!-- init soundManager2 player -->
                 <sound-manager></sound-manager>
-                <a prev-track title="last track">
+                <a prev-track title="last track" ng-click="changeSong()">
                     <i class="fa fa-2x fa-step-backward player-icon" prev-track></i>
                 </a>
                 <a play-pause-toggle data-play={{playIcon}} data-pause={{pauseIcon}} title="play/pause">
                     <span class="fa fa-2x fa-play player-icon"></span>
                 </a>
-                <a next-track title="next track">
+                <a next-track title="next track" ng-click="changeSong()">
                     <span class="fa fa-2x fa-step-forward player-icon"></span>
                 </a>
                 <!-- the progress bar -->
                 <div class="song-progress">
-                    <p>{{ currentPlaying.title }} by {{ currentPlaying.artist }} ({{ currentPostion }} / {{ currentDuration }})
+                    <p ng-class="{'invisible': !displayInfo}">
+                        <a class="text-capitalize" ui-sref="app.song({id: currentPlaying.id})">{{currentPlaying.title}}</a>
+                        -
+                        <a class="text-capitalize" ng-if="!currentPlaying.artistID.length">{{currentPlaying.artist}}</a>
+                        <a class="text-capitalize" ng-if="currentPlaying.artistID.length" ui-sref="app.artist({id: currentPlaying.artistID})">{{currentPlaying.artist}}</a> &nbsp;&nbsp;
+                        ({{ currentPostion }} / {{ currentDuration }})
                     </p>
                     <div class="seekBase" seek-track>
                         <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
