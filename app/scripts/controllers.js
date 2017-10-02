@@ -195,7 +195,7 @@ angular.module('Melody')
                 $scope.songID = angularPlayer.currentTrackData().id;
                 $scope.musicName = angularPlayer.currentTrackData().title;
                 $scope.albumName = angularPlayer.currentTrackData().albumName;
-                $scope.albumPhoto = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumPhoto;
+                $scope.albumCover = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
                 $scope.singerName = angularPlayer.currentTrackData().artist;
                 $scope.singerID = angularPlayer.currentTrackData().artistID;
             }, 100)
@@ -232,7 +232,7 @@ angular.module('Melody')
             $scope.songID = angularPlayer.currentTrackData().id;
             $scope.musicName = angularPlayer.currentTrackData().title;
             $scope.albumName = angularPlayer.currentTrackData().albumName;
-            $scope.albumPhoto = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumPhoto;
+            $scope.albumCover = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
             $scope.singerName = angularPlayer.currentTrackData().artist;
             $scope.singerID = angularPlayer.currentTrackData().artistID;
         }
