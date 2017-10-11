@@ -8,6 +8,8 @@ angular.module('Melody')
 
         refreshPlaylist();
 
+        $scope.baseUrl = 'http://localhost:3000/';
+
         // For the play pause toggle button
         $scope.playIcon = '<span class="fa fa-2x fa-play player-icon"></span>';
         $scope.pauseIcon = '<span class="fa fa-2x fa-pause player-icon"></span>';
@@ -67,23 +69,62 @@ angular.module('Melody')
         }
 
         function refreshPlaylist() {
-            songFactory.song.query(
+            // songFactory.song.query(
+            //     function (response) {
+            //         // To generate 5 random songs from database
+            //         var unique = {};
+            //         for( var i = 0; Object.keys(unique).length < 34; i++) {
+            //             // To make the song unique
+            //             // unique[JSON.stringify(response[random(response.length)])] = i;
+            //             unique[JSON.stringify(response.data[random(response.total)])] = i;
+            //         }
+            //         $scope.songs = Object.keys(unique).map(function (str) {
+            //             return JSON.parse(str);
+            //         });
+            //         // To add the songs to playlist
+            //         angular.forEach($scope.songs, function (value) {
+            //             angularPlayer.addTrack(value);
+            //         });
+            //         angularPlayer.play();
+            //         $rootScope.$broadcast('songChange');
+            //
+            //         // the current playing info display flag
+            //         $scope.displayInfo = true;
+            //     },
+            //     function (err) {
+            //         console.log(err);
+            //     }
+            // );
+            songFactory.song.get({},
                 function (response) {
+                    // console.log('response:');
+                    // console.log(response);
+
                     // To generate 5 random songs from database
                     var unique = {};
                     for( var i = 0; Object.keys(unique).length < 34; i++) {
                         // To make the song unique
-                        unique[JSON.stringify(response[random(response.length)])] = i;
+                        // unique[JSON.stringify(response[random(response.length)])] = i;
+                        unique[JSON.stringify(response.data[random(response.total)])] = i;
                     }
                     $scope.songs = Object.keys(unique).map(function (str) {
                         return JSON.parse(str);
                     });
+                    // console.log('songs:');
+                    // console.log($scope.songs);
+
                     // To add the songs to playlist
                     angular.forEach($scope.songs, function (value) {
+                        value.id = value._id;
+                        value.url = $scope.baseUrl + 'music/' + value.url;
                         angularPlayer.addTrack(value);
                     });
                     angularPlayer.play();
                     $rootScope.$broadcast('songChange');
+
+                    // console.log('Current playing:');
+                    // console.log(angularPlayer.currentTrackData());
+                    // console.log(angularPlayer.currentPlaying);
 
                     // the current playing info display flag
                     $scope.displayInfo = true;
@@ -164,7 +205,9 @@ angular.module('Melody')
 
     .controller('HomeCtrl', ['$scope', 'angularPlayer', '$rootScope', '$timeout', function ($scope, angularPlayer, $rootScope, $timeout) {
 
-        $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        // $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        $scope.baseUrl = 'http://localhost:3000/';
+
 
         // $scope.musicName = 'SHIROBAKO insert music';
         // $scope.albumName = 'Unknow';
@@ -192,7 +235,8 @@ angular.module('Melody')
         function updateHomeInfo() {
             $timeout(function () {
                 // console.log(angularPlayer.currentTrackData());
-                $scope.songID = angularPlayer.currentTrackData().id;
+                $scope.songID = angularPlayer.currentTrackData()._id;
+                // $scope.songID = angularPlayer.currentTrackData().id;
                 $scope.musicName = angularPlayer.currentTrackData().title;
                 $scope.albumName = angularPlayer.currentTrackData().albumName;
                 $scope.albumCover = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
@@ -209,7 +253,8 @@ angular.module('Melody')
         // $scope.albumPhoto = "images/album/shirobako.jpg";
         // $scope.singerName = 'Unknow';
 
-        $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        // $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        $scope.baseUrl = 'http://localhost:3000/';
         $scope.commentContent = 'click to comment!';
         // $timeout(updateSongInfo, 200);
 
@@ -229,7 +274,9 @@ angular.module('Melody')
         updateSongInfo();
 
         function updateSongInfo() {
-            $scope.songID = angularPlayer.currentTrackData().id;
+            // $scope.songID = angularPlayer.currentTrackData().id;
+            $scope.songID = angularPlayer.currentTrackData()._id;
+
             $scope.musicName = angularPlayer.currentTrackData().title;
             $scope.albumName = angularPlayer.currentTrackData().albumName;
             $scope.albumCover = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
@@ -535,7 +582,9 @@ angular.module('Melody')
         // $scope.introduction = 'Simple Plan is a Canadian rock band from Montreal, Quebec.Simple Plan \'s style of music has been described as pop punk, alternative rock, pop rock, punk rock, and power pop. Atlantic Records marketing material has described the band \'s style as having "classic punk energy and modern pop sonics". Simple Plan \'s music style has also been described as: "emo".';
         // $scope.recommended = 'Untitled, Take my hand.';
 
-        $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        // $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
+        $scope.baseUrl = 'http://localhost:3000/';
+
 
         artistFactory.get({artistId: $stateParams.id}).$promise.then(
             function (response) {

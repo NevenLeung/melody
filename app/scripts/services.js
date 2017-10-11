@@ -15,14 +15,17 @@ angular.module('Melody')
 
         return {
             random: $resource(baseUrl + 'playlist'),
-            song: $resource(baseUrl + 'song/:songId', null, null)
+            // song: $resource(baseUrl + 'song/:songId', null, null)
+            song: $resource(baseUrl + 'songs/:songId', null, null)
+
         };
 
     }])
 
     .factory('artistFactory', ['$resource', 'baseUrl', function ($resource, baseUrl) {
 
-        return $resource(baseUrl + 'artist/:artistId', null, null);
+        // return $resource(baseUrl + 'artist/:artistId', null, null);
+        return $resource(baseUrl + 'artists/:artistId', null, null);
 
     }])
 

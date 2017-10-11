@@ -318,7 +318,7 @@ pre {
 
 .playlist-sidebar:hover {
     background: #feeeee;
-    transition: background 0.5s linear;
+    transition: background 0.5s ease-out;
 }
 
 .playlist-icon {
