@@ -500,7 +500,7 @@ angular.module('Melody')
     .controller('AboutCtrl', ['baseUrl', '$scope', function (baseUrl, $scope) {
         $scope.baseUrl = baseUrl;
     }]);
-//test
-;
+
+
 
 
