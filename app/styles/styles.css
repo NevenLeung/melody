@@ -192,6 +192,11 @@ pre {
     font-size: 16px;
 }
 
+/*username validate into*/
+.editable-wrap .editable-input {
+    display: block;
+}
+
 /*.user-favList-wrapper::-webkit-scrollbar-thumb {*/
     /*border-radius: 2px;*/
     /*!*background: #1da1f2;*!*/

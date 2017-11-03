@@ -1,17 +1,12 @@
-/**
- * Created by Administrator on 2017/8/15.
- */
 'use strict';
 
 angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundManager', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularAwesomeSlider', 'angular-sortable-view', 'xeditable'])
 
     .config(function ($stateProvider, $urlRouterProvider, $uibTooltipProvider) {
 
-        // $uibTooltipProvider.options({placement: "bottom-right"});
         $uibTooltipProvider.setTriggers({'mouseenter': 'outsideClick'});
 
         $stateProvider
-
         // route for the index.html
             .state('app', {
                 url: '/',
@@ -75,13 +70,13 @@ angular.module('Melody', ['ui.router', 'ngResource', 'ngDialog', 'angularSoundMa
                 url: 'about',
                 views: {
                     'content@': {
-                        templateUrl:'views/about.html'
+                        templateUrl:'views/about.html',
+                        controller: 'AboutCtrl'
                     }
                 }
             });
 
         $urlRouterProvider.otherwise('/');
-
 
     })
 

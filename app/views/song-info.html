@@ -25,16 +25,16 @@
             <ul class="media-list song-comment" style="max-height: 345px; overflow: scroll">
                 <li class="media" ng-repeat="obj in comments">
                     <div class="media-left">
-                        <a style="display: block; width: 100px">
-                            <img class="media-object img-thumbnail user-img-center" ng-src="images/avatar001.jpg" alt="User avatar">
-                            <p style="text-align: center;">{{obj.username}}</p>
+                        <a style="display: block; width: 100px" ui-sref="app.user({id: obj.postedBy._id})">
+                            <img class="media-object img-thumbnail user-img-center" ng-src='{{obj.postedBy.avatar}}'  alt="User avatar">
+                            <p style="text-align: center;">{{obj.postedBy.username}}</p>
                         </a>
                     </div>
                     <div class="media-body" style="position: relative;">
                         <pre>
                             <p style="margin-top: -20px;">{{obj.comment}}</p>
                             <footer style="position: absolute; bottom: 5px; right: 20px;">
-                                <small>---- {{obj.time | date:'MMM. dd, yyyy'}}</small>
+                                <small>---- {{obj.updatedAt | date:'MMM. dd, yyyy'}}</small>
                             </footer>
                         </pre>
                     </div>

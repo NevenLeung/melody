@@ -9,16 +9,16 @@
             <h3>
                 His/Her favorite
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="pull-right color-salmon" play-all="songs" title="play all ths songs in the list">
+                <a class="pull-right color-salmon" play-all="favList" title="play all ths songs in the list">
                     <span class="fa fa-play"></span>
                 </a>
             </h3>
             <div class="user-favList-wrapper">
                 <div class="user-favList">
                     <table class="table table-hover table-condensed">
-                        <tr ng-repeat="song in songs" class="playlist-item">
+                        <tr ng-repeat="song in favList" class="playlist-item">
                             <td class="song-index">
-                                <span>{{songs.indexOf(song) + 1}}</span>
+                                <span>{{$index + 1}}</span>
                             </td>
                             <td class="song-info">
                                 <a>{{ song.title }}</a>

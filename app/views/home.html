@@ -9,8 +9,8 @@
                     <a title="music name" ui-sref="app.song({id: songID})">{{musicName}}</a>
                 </p>
                 <p class="text-capitalize">
-                    <a title="singer name" ng-if="singerID.length" ui-sref="app.artist({id: singerID})">{{singerName}}</a>
-                    <a title="singer name" ng-if="!singerID.length" ui-sref="app">{{singerName}}</a>
+                    <a title="artist name" ng-if="singerID.length" ui-sref="app.artist({id: singerID})">{{singerName}}</a>
+                    <a title="artist name" ng-if="!singerID.length" ui-sref="app">{{singerName}}</a>
                 </p>
                 <p class="text-capitalize">
                     <a title="album name">{{albumName}}</a>

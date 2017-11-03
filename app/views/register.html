@@ -21,9 +21,9 @@
                 <span class="form-control">Choose one as your avatar</span>
             </div>
             <div class="form-group avatar-select-wrapper">
-                <label class="select-avatar" ng-repeat="avatarUrl in $parent.avatarList">
-                    <input type="radio" name="avatar" id="avatar" placeholder="Avatar"  ng-model="registration.avatarUrl">
-                    <img ng-src="images/avatar/{{avatarUrl}}" width="70px" height="45px">
+                <label class="select-avatar" ng-repeat="avatar in $parent.avatarList">
+                    <input type="radio" name="avatar" id="avatar" placeholder="Avatar" ng-model="registration.avatar" ng-value="avatar">
+                    <img ng-src="{{baseUrl}}images/avatar/{{avatar}}" width="70px">
                 </label>
             </div>
             <div class="checkbox">

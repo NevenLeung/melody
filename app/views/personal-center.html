@@ -15,24 +15,24 @@
                         -->
 
                         <div class="user-info-text" ng-show="!userInfoForm.$visible">
-                            {{userName}}
+                            {{userInfo.username}}
                             <a ng-click="userInfoForm.$show()" ng-show="!userInfoForm.$visible">
                                 <span class="fa fa-edit"></span>
                             </a>
                         </div>
                         <div class="user-info-text" ng-show="!userInfoForm.$visible">
-                            {{introduction}}
+                            {{userInfo.introduction}}
                         </div>
 
                         <!-- xeditable component -->
                         <form editable-form name="userInfoForm" onaftersave="saveUserInfo()" class="personal-info-form">
                             <div class="user-info-text">
                                 <span class="title" ng-show="userInfoForm.$visible">User Name: </span>
-                                <span editable-text="userName" ng-show="userInfoForm.$visible" onbeforesave="checkIsEmpty($data)">{{userName}}</span>
+                                <span editable-text="userInfo.username" ng-show="userInfoForm.$visible" onbeforesave="checkUsername($data)" e-maxlength="11">{{userInfo.username}}</span>
                             </div>
                             <div class="user-info-text">
                                 <span class="title" ng-show="userInfoForm.$visible">Introduction: </span>
-                                <span editable-textarea="introduction" ng-show="userInfoForm.$visible">{{introduction}}</span>
+                                <span editable-textarea="userInfo.introduction" ng-show="userInfoForm.$visible" e-maxlength="100">{{userInfo.introduction}}</span>
                             </div>
                             <div class="user-info-text" ng-show="userInfoForm.$visible">
                                 <button type="submit" class="btn btn-primary btn-sm" ng-disabled="userInfoForm.$waiting">
@@ -58,16 +58,16 @@
                         <a class="color-salmon" ng-click="removeAllFromFav()" title="clean all the songs in favorite list">
                             <span class="fa fa-trash"></span>
                         </a>
-                        <a class="pull-right color-salmon" play-all="songs" title="play all ths songs in the list">
+                        <a class="pull-right color-salmon" play-all="favList" title="play all ths songs in the list">
                             <span class="fa fa-play"></span>
                         </a>
                     </h3>
                     <div class="user-favList-wrapper">
                         <div class="user-favList">
-                            <table class="table table-hover table-condensed" sv-root sv-part="songs">
-                                <tr ng-repeat="song in songs" class="playlist-item" sv-element>
+                            <table class="table table-hover table-condensed" sv-root sv-part="favList" sv-on-sort="changeFavListOrder()">
+                                <tr ng-repeat="song in favList" class="playlist-item" sv-element>
                                     <td class="song-index">
-                                        <span>{{songs.indexOf(song) + 1}}</span>
+                                        <span>{{$index + 1}}</span>
                                     </td>
                                     <td class="song-info">
                                         <a>{{ song.title }}</a>

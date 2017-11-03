@@ -1,14 +1,9 @@
-/**
- * Created by Administrator on 2017/8/15.
- */
 'use strict';
 
 angular.module('Melody')
-    .controller('PlayerCtrl', ['$scope', 'angularPlayer', '$timeout', '$rootScope', 'songFactory', function ($scope, angularPlayer, $timeout, $rootScope, songFactory) {
+    .controller('PlayerCtrl', ['$scope', 'angularPlayer', '$timeout', '$rootScope', 'songFactory', 'favFactory', 'AuthFactory', 'ngDialog', 'baseUrl', function ($scope, angularPlayer, $timeout, $rootScope, songFactory, favFactory, AuthFactory, ngDialog, baseUrl) {
 
         refreshPlaylist();
-
-        $scope.baseUrl = 'http://localhost:3000/';
 
         // For the play pause toggle button
         $scope.playIcon = '<span class="fa fa-2x fa-play player-icon"></span>';
@@ -27,19 +22,36 @@ angular.module('Melody')
             }
         };
 
-        $scope.toggleFavorite = function () {
-            return $scope.currentPlaying.favorite = !$scope.currentPlaying.favorite;
+        $scope.toggleFavorite = function (item) {
+            if (AuthFactory.isAuthenticated()) {
+                // only user who logged in can execute this operation
+                favFactory.updateFavoriteList(item);
+                item.favorite = favFactory.isInFavList(item);
+            } else {
+                ngDialog.open({
+                    template: 'views/loginReminder.html',
+                    className: 'ngdialog-theme-default'
+                });
+            }
         };
 
-        // $scope.clickIndex = function (song) {
-        //     console.log($scope.playlist);
-        //     console.log(angularPlayer.getIndexByValue($scope.playlist, song));
+        $rootScope.$on('favoriteList: Update', function (event,data) {
+            if (data.operation == 'removeAll') {
+                angular.forEach($scope.playlist, function (item) {
+                    item.favorite = false;
+                })
+            }
+        });
+
+        // $scope.displayCurrentPlaying = function () {
+        //     console.log($scope.currentPlaying);
+        //     console.log(favFactory.isInFavList($scope.currentPlaying));
         // };
         
         $scope.spinIcon = function () {
             angularPlayer.stop();
             angularPlayer.setCurrentTrack(null);
-
+            // clearPlaylist method needs a callback
             angularPlayer.clearPlaylist(function () {
                 // console.log('Playlist is clear.');
             });
@@ -51,80 +63,45 @@ angular.module('Melody')
             }, 1000);
         };
 
-        $scope.isOpen = false;
-
-        //console.log($scope.currentPlaying);
-        $scope.changeSong = function () {
-            $rootScope.$broadcast('songChange', $scope.currentPlaying);
-        };
-
+        // use the angular sound manager built-in event, which means clear playlist action has been executed
+        // change the current playing info display flag
+        // if none of song is in playlist, do not display the song info above the progress bar
         $rootScope.$on('player:playlist', function (event, data) {
-            if (data.length === 0) {
-                $scope.displayInfo = false;
-            }
+            $scope.displayInfo = data.length !== 0;
         });
+
+        $rootScope.$on('login: Successful', setFavorite);
+
+        $rootScope.$on('logout: Successful', resetFavorite);
 
         function random(n) {
             return Math.floor(Math.random() * n);
         }
 
         function refreshPlaylist() {
-            // songFactory.song.query(
-            //     function (response) {
-            //         // To generate 5 random songs from database
-            //         var unique = {};
-            //         for( var i = 0; Object.keys(unique).length < 34; i++) {
-            //             // To make the song unique
-            //             // unique[JSON.stringify(response[random(response.length)])] = i;
-            //             unique[JSON.stringify(response.data[random(response.total)])] = i;
-            //         }
-            //         $scope.songs = Object.keys(unique).map(function (str) {
-            //             return JSON.parse(str);
-            //         });
-            //         // To add the songs to playlist
-            //         angular.forEach($scope.songs, function (value) {
-            //             angularPlayer.addTrack(value);
-            //         });
-            //         angularPlayer.play();
-            //         $rootScope.$broadcast('songChange');
-            //
-            //         // the current playing info display flag
-            //         $scope.displayInfo = true;
-            //     },
-            //     function (err) {
-            //         console.log(err);
-            //     }
-            // );
             songFactory.song.get({},
                 function (response) {
-                    // console.log('response:');
-                    // console.log(response);
-
                     // To generate 5 random songs from database
                     var unique = {};
-                    for( var i = 0; Object.keys(unique).length < 34; i++) {
+                    for(var i = 0; Object.keys(unique).length < 5; i++) {
                         // To make the song unique
-                        // unique[JSON.stringify(response[random(response.length)])] = i;
                         unique[JSON.stringify(response.data[random(response.total)])] = i;
                     }
                     $scope.songs = Object.keys(unique).map(function (str) {
                         return JSON.parse(str);
                     });
-                    // console.log('songs:');
-                    // console.log($scope.songs);
 
                     // To add the songs to playlist
-                    angular.forEach($scope.songs, function (value) {
-                        value.id = value._id;
-                        value.url = $scope.baseUrl + 'music/' + value.url;
-                        angularPlayer.addTrack(value);
+                    angular.forEach($scope.songs, function (item) {
+                        item.id = item._id;
+                        item.url = baseUrl + 'music/' + item.url;
+                        // if user is logged in, set his/her favorite to song info object
+                        item.favorite = favFactory.isInFavList(item);
+                        angularPlayer.addTrack(item);
                     });
                     angularPlayer.play();
-                    $rootScope.$broadcast('songChange');
-
-                    // console.log('Current playing:');
-                    // console.log(angularPlayer.currentTrackData());
-                    // console.log(angularPlayer.currentPlaying);
+                    // use the angular sound manager built-in event, which means a new song begin to play
+                    $rootScope.$broadcast('track:id');
 
                     // the current playing info display flag
                     $scope.displayInfo = true;
@@ -134,13 +111,27 @@ angular.module('Melody')
                 }
             );
         }
+        
+        function setFavorite() {
+            angular.forEach($scope.playlist, function (item) {
+                item.favorite = favFactory.isInFavList(item);
+            });
+        }
+
+        function resetFavorite() {
+            angular.forEach($scope.playlist, function (item) {
+                item.favorite = false;
+            });
+        }
     }])
 
-    .controller('HeaderCtrl', ['$scope', 'ngDialog', '$rootScope', function ($scope, ngDialog, $rootScope) {
+    .controller('HeaderCtrl', ['$scope', '$state', 'ngDialog', '$rootScope', 'baseUrl', 'localStorage', 'AuthFactory', function ($scope, $state, ngDialog, $rootScope, baseUrl, localStorage, AuthFactory) {
 
-        $scope.isLogin= false;
+        $scope.baseUrl = baseUrl;
 
-        $scope.avatar = 'images/avatar001.jpg';
+        $scope.isLoggedIn= AuthFactory.isAuthenticated();
+
+        loadUserInfo();
 
         $scope.openRegisterModal = function () {
             ngDialog.open({
@@ -149,7 +140,6 @@ angular.module('Melody')
                 className: 'ngdialog-theme-default',
                 controller:"RegisterCtrl"
             });
-            // $scope.isLogin = true;
         };
 
         $scope.openLoginModal = function () {
@@ -162,51 +152,65 @@ angular.module('Melody')
         };
 
         $scope.doLogout = function () {
-            $scope.isLogin = false;
+            $scope.isLoggedIn = false;
+            AuthFactory.logout();
             // $scope.userName = '';
         };
 
-        $rootScope.$on('login:Successful', function () {
-            $scope.isLogin = true;
+        $rootScope.$on('login: Successful', function () {
+            loadUserInfo();
+            $scope.isLoggedIn = true;
         });
 
-        $rootScope.$on('registration:Successful', function () {
-            $scope.isLogin = true;
+        $rootScope.$on('logout: Successful', function () {
+            $state.go('app');
         });
 
-        $scope.stateIs = function(curstate) {
-            return $state.is(curstate);
+        $scope.stateIs = function(currentState) {
+            return $state.is(currentState);
         };
 
-        $scope.avatarList = ['005.jpg', '007.jpg', '010.jpg', '017.jpg', '019.jpg'];
+        $scope.avatarList = ['001.jpg', '002.jpg', '003.jpg', '004.jpg', '005.jpg'];
+
+        function loadUserInfo() {
+            $scope.username = localStorage.getObject('Token', '{}').username;
+            $scope.avatar = baseUrl + 'images/avatar/' + localStorage.getObject('Token', '{}').avatar;
+            $scope.userID = localStorage.getObject('Token', '{}').userID;
+        }
     }])
 
-    .controller('LoginCtrl', ['$scope', 'ngDialog', '$rootScope', function ($scope, ngDialog, $rootScope) {
+    .controller('LoginCtrl', ['$scope', 'ngDialog', '$rootScope', 'AuthFactory', 'localStorage', function ($scope, ngDialog, $rootScope, AuthFactory, localStorage) {
+
+        $scope.loginData = localStorage.getObject('userinfo', '{}');
 
         $scope.doLogin = function () {
-            // $scope.isLogin = true;
+            if ($scope.rememberMe) {
+                localStorage.storeObject('userinfo', $scope.loginData);
+            }
+
+            AuthFactory.login($scope.loginData);
+
             ngDialog.close();
-            $rootScope.$broadcast('login:Successful');
         }
 
     }])
 
-    .controller('RegisterCtrl', ['$scope', 'ngDialog', '$rootScope', function ($scope, ngDialog, $rootScope) {
+    .controller('RegisterCtrl', ['$scope', 'ngDialog', '$rootScope', 'AuthFactory', function ($scope, ngDialog, $rootScope, AuthFactory) {
+
+        $scope.registration = {};
+        $scope.loginData = {};
 
         $scope.doRegistration = function () {
-            // $scope.isLogin = true;
+            // console.log($scope.registration);
+            AuthFactory.register($scope.registration);
             ngDialog.close();
-            $rootScope.$broadcast('registration:Successful');
         };
-
-        // console.log( $scope.$parent);
 
     }])
 
-    .controller('HomeCtrl', ['$scope', 'angularPlayer', '$rootScope', '$timeout', function ($scope, angularPlayer, $rootScope, $timeout) {
+    .controller('HomeCtrl', ['$scope', 'angularPlayer', '$rootScope', '$timeout', 'baseUrl', function ($scope, angularPlayer, $rootScope, $timeout, baseUrl) {
 
-        // $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
-        $scope.baseUrl = 'http://localhost:3000/';
+        $scope.baseUrl = baseUrl;
 
 
         // $scope.musicName = 'SHIROBAKO insert music';
@@ -214,18 +218,15 @@ angular.module('Melody')
         // $scope.albumPhoto = "images/album/shirobako.jpg";
         // $scope.singerName = 'Unknow';
 
-        // console.log(angularPlayer.currentTrackData());
-
-        // $timeout(updateHomeInfo, 200);
         updateHomeInfo();
 
-        $rootScope.$on('songChange', function (event, data) {
+        // listen the song change, including prev and next button
+        $rootScope.$on('track:id', function (event, data) {
             // console.log(data);
             updateHomeInfo();
         });
 
         $rootScope.$on('track:progress', function (event, data) {
-            // console.log('here');
             // console.log(data);
             if (parseInt(data) === 100) {
                 updateHomeInfo();
@@ -233,10 +234,9 @@ angular.module('Melody')
         });
 
         function updateHomeInfo() {
+            // use $timeout to obtain the data from angularPlayer.currentTrackData() a little later
             $timeout(function () {
-                // console.log(angularPlayer.currentTrackData());
                 $scope.songID = angularPlayer.currentTrackData()._id;
-                // $scope.songID = angularPlayer.currentTrackData().id;
                 $scope.musicName = angularPlayer.currentTrackData().title;
                 $scope.albumName = angularPlayer.currentTrackData().albumName;
                 $scope.albumCover = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
@@ -246,345 +246,242 @@ angular.module('Melody')
         }
     }])
 
-    .controller('SongCtrl', ['$scope', '$stateParams', 'angularPlayer', '$timeout', 'commentFactory', function ($scope, $stateParams, angularPlayer, $timeout, commentFactory) {
+    .controller('SongCtrl', ['$scope', '$stateParams', 'angularPlayer', '$timeout', 'songFactory', 'AuthFactory', 'ngDialog', 'baseUrl', function ($scope, $stateParams, angularPlayer, $timeout, songFactory, AuthFactory, ngDialog, baseUrl) {
 
-        // $scope.musicName = 'SHIROBAKO insert music';
-        // $scope.albumName = 'Unknow';
-        // $scope.albumPhoto = "images/album/shirobako.jpg";
-        // $scope.singerName = 'Unknow';
-
-        // $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
-        $scope.baseUrl = 'http://localhost:3000/';
         $scope.commentContent = 'click to comment!';
-        // $timeout(updateSongInfo, 200);
-
-        // Maybe use it to check is data is empty or the user has already commented
-        $scope.checkComment = function (data) {
-            console.log(data);
-        };
-
-        // save the comment to database and make the pager to page number of newest comment
-        $scope.submitComment = function () {
-            console.log('submit comment!');
-            var lastPageNum = Math.ceil($scope.totalItems/$scope.itemsPerPage);
-            $scope.currentPage = lastPageNum;
-            $scope.pageChange();
-        };
-
-        updateSongInfo();
-
-        function updateSongInfo() {
-            // $scope.songID = angularPlayer.currentTrackData().id;
-            $scope.songID = angularPlayer.currentTrackData()._id;
-
-            $scope.musicName = angularPlayer.currentTrackData().title;
-            $scope.albumName = angularPlayer.currentTrackData().albumName;
-            $scope.albumCover = $scope.baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
-            $scope.singerName = angularPlayer.currentTrackData().artist;
-            $scope.singerID = angularPlayer.currentTrackData().artistID;
-        }
-
-
-
-        // $scope.comments = [
-        //     {
-        //         username: 'Michael King',
-        //         avatar: '019.jpg',
-        //         comment: "It's great actually!",
-        //         time: new Date()
-        //     },
-        //     {
-        //         username: 'Tracy Howard',
-        //         avatar: '005.jpg',
-        //         comment: "It's great actually!",
-        //         time: new Date()
-        //     },
-        //     {
-        //         username: 'David Ford',
-        //         avatar: '007.jpg',
-        //         comment: "It's great actually!",
-        //         time: new Date()
-        //     },
-        //     {
-        //         username: 'Christina Jones',
-        //         avatar: '010.jpg',
-        //         comment: "It's great actually!",
-        //         time: new Date()
-        //     },
-        //     {
-        //         username: 'Taylor Elizabeth',
-        //         avatar: '017.jpg',
-        //         comment: "It's great actually!",
-        //         time: new Date()
-        //     }
-        // ];
-
-        commentFactory.total.query(
-            function (response) {
-                $scope.totalItems = response.length;
-            },
-            function (err) {
-                console.log(err);
-            }
-        );
 
         $scope.currentPage = 1;
         $scope.itemsPerPage = 5;
 
         $scope.maxSize = 5;
 
-        commentFactory.page.query({pageNum:$scope.currentPage})
-            .$promise.then(
-                function (response) {
-                    $scope.comments = response;
-                },
-                function (err) {
-                    console.log(err);
-                }
-        );
+        $scope.checkComment = function () {
+            if (!AuthFactory.isAuthenticated()) {
+                ngDialog.open({
+                    template: 'views/loginReminder.html',
+                    className: 'ngdialog-theme-default'
+                });
+                return '';
+            }
+        };
 
+        // save the comment to database and set the pager to page number of newest comment
+        $scope.submitComment = function () {
+            console.log('submit comment!');
+            $scope.currentPage = Math.ceil($scope.totalItems/$scope.itemsPerPage);
+            $scope.pageChange();
+            songFactory.comment.save(
+                    {
+                        songId: $stateParams.id
+                    },
+                    {
+                        comment: $scope.commentContent
+                    },
+                    function (response) {
+                        console.log(response);
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                );
+        };
+
+        // use mongoose-paginate to implement the pagination
         $scope.pageChange = function () {
-            commentFactory.page.query({pageNum:$scope.currentPage})
+            songFactory.comment.get(
+                {
+                    songId: $stateParams.id,
+                    page:$scope.currentPage
+                })
                 .$promise.then(
                 function (response) {
-                    $scope.comments = response;
+                    angular.forEach(response.docs, function (item) {
+                        item.postedBy.avatar = baseUrl + 'images/avatar/' + item.postedBy.avatar;
+                    });
+                    $scope.comments = response.docs;
+                    $scope.totalItems = response.total
                 },
                 function (err) {
                     console.log(err);
                 }
             );
         };
-        $scope.list = commentFactory.total.query();
-        // $scope.list = commentFactory.total.query({pageNum:$scope.currentPage});
 
+        function updateSongInfo() {
+            $scope.songID = angularPlayer.currentTrackData()._id;
 
-        // console.log($stateParams);
+            $scope.musicName = angularPlayer.currentTrackData().title;
+            $scope.albumName = angularPlayer.currentTrackData().albumName;
+            $scope.albumCover = baseUrl + 'images/album/' + angularPlayer.currentTrackData().albumCover;
+            $scope.singerName = angularPlayer.currentTrackData().artist;
+            $scope.singerID = angularPlayer.currentTrackData().artistID;
+        }
 
-        // $timeout(function () {
-        //     console.log($scope.list);
-        //     console.log($scope.totalItems);
-        // }, 500);
+        updateSongInfo();
+        $scope.pageChange();
 
 
     }])
 
-    .controller('PersonalCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+    .controller('PersonalCtrl', ['$scope', '$state', '$timeout', '$rootScope', 'baseUrl', 'localStorage', 'userFactory', 'favFactory', '$q', '$http', 'AuthFactory', 'ngDialog', function ($scope, $state, $timeout, $rootScope, baseUrl, localStorage, userFactory, favFactory, $q, $http, AuthFactory, ngDialog) {
 
-        $scope.userPhoto = 'images/avatar001.jpg';
-        $scope.userName = 'Neven';
-        $scope.introduction = 'An interesting guy';
+        // $scope.userPhoto = baseUrl + 'images/avatar001.jpg';
+        // $scope.userName = 'Neven';
+        // $scope.introduction = 'An interesting guy';
 
-        $scope.songs = [
-            {
-                id: 1,
-                title: 'SHIROBAKO',
-                artist: 'Unknown',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SHIROBAKO.mp3',
-                time: '3:08',
-                favorite: true
-            },
-            {
-                id: 2,
-                title: 'TREASURE BOX',
-                artist: '奥井雅美',
-                url: 'http://localhost:3000/confusion-bootstrap/music/奥井雅美 - 宝箱-TREASURE BOX- (TVアニメ『SHIROBAKO』OPテーマ).mp3',
-                time: '3:50',
-                favorite: false
-            },
-            {
-                id: 3,
-                title: 'COLORFUL BOX',
-                artist: '石田燿子',
-                url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3',
-                time: '3:59',
-                favorite: false
-            },
-            {
-                id: 4,
-                title: 'Coming Home',
-                artist: 'Diddy & Skylar Grey',
-                url: 'http://localhost:3000/confusion-bootstrap/music/Diddy、Skylar Grey - Coming Home.mp3',
-                time: '3:59',
-                favorite: false
-            },
-            {
-                id: 5,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 6,
-                title: 'きみのこえ',
-                artist: '川嶋あい',
-                url: 'http://localhost:3000/confusion-bootstrap/music/川嶋あい - きみのこえ.mp3',
-                time: '5:39',
-                favorite: false
-            },
-            {
-                id: 7,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 8,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 9,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
+        $scope.favList = [];
+        $scope.userInfo = {};
+
+        var userID = localStorage.getObject('Token', '{}').userID;
+        var favListOrder = localStorage.getObject(userID, '[]');
+
+        checkLoginStatus();
+        loadFavlist();
+
+        function checkLoginStatus() {
+            if (!AuthFactory.isAuthenticated()) {
+                ngDialog.open({
+                    template: 'views/loginReminder.html',
+                    className: 'ngdialog-theme-default'
+                });
+                $state.go('app');
             }
-        ];
+        }
+
+        function loadFavlist() {
+            if (userID) {
+                userFactory.favorite.get({
+                    id: userID
+                }).$promise.then(function (response) {
+                    $scope.userInfo.username = response.username;
+                    $scope.userPhoto = baseUrl + 'images/avatar/' + response.avatar;
+                    $scope.userInfo.introduction = response.introduction;
+
+                    // save favList order after drag & drop in a callback!! Not save to server,
+                    // only save in localStorage, and sync the order after get the response from server.
+                    angular.forEach(favListOrder, function (songID) {
+                            angular.forEach(response.favorites, function (item) {
+                                if (songID == item.songInfo._id) {
+                                    item.songInfo.id = item.songInfo._id;
+                                    item.songInfo.url = baseUrl + 'music/' + item.songInfo.url;
+                                    $scope.favList.push(item.songInfo);
+                                }
+                            });
+                        }
+                    );
+                }, function (err) {
+                    console.log(err);
+                });
+            }
+        }
+        
+        $scope.changeFavListOrder = function () {
+            favListOrder = [];
+            angular.forEach($scope.favList, function (item) {
+                favListOrder.push(item._id);
+            });
+            localStorage.storeObject(userID, favListOrder);
+        };
 
         $scope.removeOneFromFav = function (item) {
-            $scope.songs.splice($scope.songs.indexOf(item), 1);
+            favFactory.updateFavoriteList(item);
         };
 
         $scope.removeAllFromFav = function () {
-            $scope.songs = [];
+            favFactory.removeAll();
         };
-
-        $scope.log = function () {
-            console.log($scope.userName);
-            console.log($scope.introduction);
+        
+        $scope.checkUsername = function (data) {
+            if (data == '') {
+                return 'Username can not be empty!';
+            }
+            else {
+                // check if the username has been used by others.
+                var d = $q.defer();
+                $http.put(baseUrl+'users/' + userID , {username: data})
+                    .then(function(res) {
+                        res = res || {};
+                        if(res.status == '200') {
+                            d.resolve()
+                        }
+                    }, function(err){
+                        if (err.status == 500) {
+                            d.reject('Username ' + data + ' has been already used!');
+                    }});
+                return d.promise;
+            }
         };
 
         $scope.saveUserInfo = function () {
             // make a put request to server to save information
             console.log('save');
-        };
-        
-        $scope.checkIsEmpty =function (data) {
-            console.log('here');
-            if (data == '') return 'User name can not be empty!';
-        };
-        // $timeout(function () {
-        //     var id = document.getElementById('fav');
-        //     var log = id.style;
-        //     console.log(log);
-        // }, 0);
-
-
-    }])
-
-    .controller('UserCtrl', ['$scope', 'angularPlayer', function ($scope, angularPlayer) {
-
-        $scope.userPhoto = 'images/avatar001.jpg';
-        $scope.userName = 'Neven';
-        $scope.introduction = 'An interesting guy';
-
-        $scope.songs = [
-            {
-                id: 1,
-                title: 'SHIROBAKO',
-                artist: 'Unknown',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SHIROBAKO.mp3',
-                time: '3:08',
-                favorite: true
-            },
-            {
-                id: 2,
-                title: 'TREASURE BOX',
-                artist: '奥井雅美',
-                url: 'http://localhost:3000/confusion-bootstrap/music/奥井雅美 - 宝箱-TREASURE BOX- (TVアニメ『SHIROBAKO』OPテーマ).mp3',
-                time: '3:50',
-                favorite: false
-            },
-            {
-                id: 3,
-                title: 'COLORFUL BOX',
-                artist: '石田燿子',
-                url: 'http://localhost:3000/confusion-bootstrap/music/石田燿子 - COLORFUL BOX.mp3',
-                time: '3:59',
-                favorite: false
-            },
-            {
-                id: 4,
-                title: 'Coming Home',
-                artist: 'Diddy & Skylar Grey',
-                url: 'http://localhost:3000/confusion-bootstrap/music/Diddy、Skylar Grey - Coming Home.mp3',
-                time: '3:59',
-                favorite: false
-            },
-            {
-                id: 5,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 6,
-                title: 'きみのこえ',
-                artist: '川嶋あい',
-                url: 'http://localhost:3000/confusion-bootstrap/music/川嶋あい - きみのこえ.mp3',
-                time: '5:39',
-                favorite: false
-            },
-            {
-                id: 7,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 8,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            },
-            {
-                id: 9,
-                title: '新世界',
-                artist: 'SiS乐印姊妹',
-                url: 'http://localhost:3000/confusion-bootstrap/music/SiS乐印姊妹 - 新世界.mp3',
-                time: '4:03',
-                favorite: false
-            }
-        ];
-
-        $scope.playFavList = function () {
-            angularPlayer.clearPlaylist(function () {
-                console.log('Playlist is clear.')
+            userFactory.user.update({id: userID}, $scope.userInfo)
+                .$promise.then(function (response) {
+                console.log(response);
+            }, function (err) {
+                console.log(err);
             });
-            // angularPlayer.addToPlaylist()
-            // angularPlayer.play();
-            // console.log(angularPlayer.getPlaylist());
-            // angularPlayer.pause();
         };
+
+        $rootScope.$on('favoriteList: Update', function (event,data) {
+            if (data.operation == 'add') {
+                $scope.favList.push(data.song);
+            } else {
+                $scope.favList.splice($scope.favList.indexOf(data.song), 1);
+            }
+        });
+
+    }])
+
+    .controller('UserCtrl', ['$scope', 'angularPlayer', '$stateParams','userFactory', 'baseUrl', function ($scope, angularPlayer, $stateParams, userFactory, baseUrl) {
+
+        $scope.favList = [];
+
+        userFactory.favorite.get({
+            id: $stateParams.id
+        }).$promise.then(function (response) {
+            $scope.userName = response.username;
+            $scope.userPhoto = baseUrl + 'images/avatar/' + response.avatar;
+            $scope.introduction = response.introduction;
+
+            angular.forEach(response.favorites, function (item) {
+                item.songInfo.id = item.songInfo._id;
+                item.songInfo.url = baseUrl + 'music/' + item.songInfo.url;
+                $scope.favList.push(item.songInfo);
+            })
+        }, function (err) {
+            console.log(err);
+        });
+
+        // $scope.userPhoto = 'images/avatar001.jpg';
+        // $scope.userName = 'Neven';
+        // $scope.introduction = 'An interesting guy';
+
+        // $scope.favList = [
+        //     {
+        //         id: 1,
+        //         title: 'SHIROBAKO',
+        //         artist: 'Unknown',
+        //         url: 'http://localhost:3000/music/SHIROBAKO.mp3',
+        //         time: '3:08',
+        //         favorite: true
+        //     }
+        //     {
+        //         id: 2,
+        //         title: 'Coming Home',
+        //         artist: 'Diddy & Skylar Grey',
+        //         url: 'http://localhost:3000/music/Diddy、Skylar Grey - Coming Home.mp3',
+        //         time: '3:59',
+        //         favorite: false
+        //     }
+        // ];
 
 
 
     }])
 
-    .controller('ArtistCtrl', ['$scope', 'artistFactory', '$stateParams', function ($scope, artistFactory, $stateParams) {
-
-        // $scope.artistPhoto = "images/artist/simple-plan.jpg";
-        // $scope.artistName = 'Simple plan';
-        // $scope.introduction = 'Simple Plan is a Canadian rock band from Montreal, Quebec.Simple Plan \'s style of music has been described as pop punk, alternative rock, pop rock, punk rock, and power pop. Atlantic Records marketing material has described the band \'s style as having "classic punk energy and modern pop sonics". Simple Plan \'s music style has also been described as: "emo".';
-        // $scope.recommended = 'Untitled, Take my hand.';
-
-        // $scope.baseUrl = 'http://localhost:3000/confusion-bootstrap/';
-        $scope.baseUrl = 'http://localhost:3000/';
-
+    .controller('ArtistCtrl', ['$scope', 'artistFactory', '$stateParams', 'baseUrl', function ($scope, artistFactory, $stateParams, baseUrl) {
+        $scope.baseUrl = baseUrl;
 
         artistFactory.get({artistId: $stateParams.id}).$promise.then(
             function (response) {
@@ -598,6 +495,11 @@ angular.module('Melody')
             }
         )
 
+    }])
+    
+    .controller('AboutCtrl', ['baseUrl', '$scope', function (baseUrl, $scope) {
+        $scope.baseUrl = baseUrl;
     }]);
+;
 
 
