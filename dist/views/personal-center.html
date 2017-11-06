@@ -1,0 +1,168 @@
+<div class="container">
+    <div class="row position-center">
+        <uib-tabset active="1">
+            <uib-tab index="0" heading="Personal Info">
+                <div class="row personal-info-wrapper">
+                    <div class="col-md-6 personal-avatar">
+                        <img ng-src='{{userPhoto}}' class="" alt="artist photo" width="150px">
+                    </div>
+                    <div class="col-md-6 personal-info">
+
+                        <!--
+                        When the editable form shows, the content will at a lower position than before,
+                        so I use other elements to show the content. At the same time, I use css to
+                        pull the form to a proper position.
+                        -->
+
+                        <div class="user-info-text" ng-show="!userInfoForm.$visible">
+                            {{userInfo.username}}
+                            <a ng-click="userInfoForm.$show()" ng-show="!userInfoForm.$visible">
+                                <span class="fa fa-edit"></span>
+                            </a>
+                        </div>
+                        <div class="user-info-text" ng-show="!userInfoForm.$visible">
+                            {{userInfo.introduction}}
+                        </div>
+
+                        <!-- xeditable component -->
+                        <form editable-form name="userInfoForm" onaftersave="saveUserInfo()" class="personal-info-form">
+                            <div class="user-info-text">
+                                <span class="title" ng-show="userInfoForm.$visible">User Name: </span>
+                                <span editable-text="userInfo.username" ng-show="userInfoForm.$visible" onbeforesave="checkUsername($data)" e-maxlength="11">{{userInfo.username}}</span>
+                            </div>
+                            <div class="user-info-text">
+                                <span class="title" ng-show="userInfoForm.$visible">Introduction: </span>
+                                <span editable-textarea="userInfo.introduction" ng-show="userInfoForm.$visible" e-maxlength="100">{{userInfo.introduction}}</span>
+                            </div>
+                            <div class="user-info-text" ng-show="userInfoForm.$visible">
+                                <button type="submit" class="btn btn-primary btn-sm" ng-disabled="userInfoForm.$waiting">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm" ng-disabled="userInfoForm.$waiting" ng-click="userInfoForm.$cancel()">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+            </uib-tab>
+
+            <uib-tab index="1" heading="Favorite List">
+                <div class="row user-wrapper">
+                    <h3>
+                        My favorite
+                        <span class="fa fa-info-circle" style="font-size: 14px" uib-tooltip="drag and drop on the empty of song item can adjust the order of list" tooltip-placement="top" tooltip-trigger="'outsideClick'"></span>
+                        &nbsp;
+                        <a class="color-salmon" ng-click="removeAllFromFav()" title="clean all the songs in favorite list">
+                            <span class="fa fa-trash"></span>
+                        </a>
+                        <a class="pull-right color-salmon" play-all="favList" title="play all ths songs in the list">
+                            <span class="fa fa-play"></span>
+                        </a>
+                    </h3>
+                    <div class="user-favList-wrapper">
+                        <div class="user-favList">
+                            <table class="table table-hover table-condensed" sv-root sv-part="favList" sv-on-sort="changeFavListOrder()">
+                                <tr ng-repeat="song in favList" class="playlist-item" sv-element>
+                                    <td class="song-index">
+                                        <span>{{$index + 1}}</span>
+                                    </td>
+                                    <td class="song-info">
+                                        <a>{{ song.title }}</a>
+                                        <a title="Drag/drop a item to adjust the playlist order">-</a>
+                                        <a>{{song.artist}}</a>
+                                    </td>
+                                    <td>
+                                        <span class="song-ctrl">
+                                            <a music-player="play" add-song="song" title="add to playlist and play it">
+                                                <span class="fa fa-play"></span>
+                                            </a>
+                                            <a ng-click="removeOneFromFav(song)" title="remove this song from favorite list">
+                                                <span class="fa fa-trash"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                    <td class="song-time">
+                                        <a>{{song.time}}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+
+
+    <!--<div class="row position-center user-wrapper">-->
+        <!--<div class="col-md-4 col-md-offset-2 user-info-wrapper">-->
+            <!--<img ng-src='{{userPhoto}}' alt="artist photo" width="150px">-->
+            <!--&lt;!&ndash; xeditable component &ndash;&gt;-->
+            <!--<form editable-form name="userInfoForm" onaftersave="saveUserInfo">-->
+                <!--<div class="user-info-text">-->
+                    <!--<span class="title" ng-show="userInfoForm.$visible">User Name: </span>-->
+                    <!--<span editable-text="userName" onbeforesave="checkEmpty($data)">{{userName}}</span>-->
+                    <!--<a ng-click="userInfoForm.$show()" ng-show="!userInfoForm.$visible">-->
+                        <!--<span class="fa fa-edit"></span>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<div class="user-info-text">-->
+                    <!--<span class="title"ng-show="userInfoForm.$visible">Introduction: </span>-->
+                    <!--<span editable-textarea="introduction">{{introduction}}</span>-->
+                <!--</div>-->
+                <!--<div class="user-info-text" ng-show="userInfoForm.$visible">-->
+                    <!--<button type="submit" class="btn btn-primary btn-sm" ng-disabled="userInfoForm.$waiting">-->
+                        <!--<span class="glyphicon glyphicon-ok"></span>-->
+                    <!--</button>-->
+                    <!--<button type="button" class="btn btn-default btn-sm" ng-disabled="userInfoForm.$waiting" ng-click="userInfoForm.$cancel()">-->
+                        <!--<span class="glyphicon glyphicon-remove"></span>-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-4">-->
+            <!--<h3>-->
+                <!--My favorite-->
+                <!--&nbsp;-->
+                <!--<a class="color-salmon" ng-click="removeAllFromFav()" title="clean all the songs in favorite list">-->
+                    <!--<span class="fa fa-trash"></span>-->
+                <!--</a>-->
+                <!--<a class="pull-right color-salmon" play-all="songs" title="play all ths songs in the list">-->
+                    <!--<span class="fa fa-play"></span>-->
+                <!--</a>-->
+            <!--</h3>-->
+            <!--<div class="user-favList-wrapper" id="fav">-->
+                <!--<div class="user-favList">-->
+                    <!--<table class="table table-hover table-condensed" sv-root sv-part="songs">-->
+                        <!--<tr ng-repeat="song in songs" class="playlist-item" sv-element  play-from-playlist="song">-->
+                            <!--<td class="song-index">-->
+                                <!--<span>{{songs.indexOf(song) + 1}}</span>-->
+                            <!--</td>-->
+                            <!--<td class="song-info">-->
+                                <!--<a>{{ song.title }}</a>-->
+                                <!--<a title="Drag/drop a item to adjust the playlist order">-</a>-->
+                                <!--<a>{{song.artist}}</a>-->
+                            <!--</td>-->
+                            <!--<td>-->
+                        <!--<span class="song-ctrl">-->
+                            <!--<a music-player="play" add-song="song" title="add to playlist and play it">-->
+                                <!--<span class="fa fa-play"></span>-->
+                            <!--</a>-->
+                            <!--<a ng-click="removeOneFromFav(song)" title="remove this song from favorite list">-->
+                                <!--<span class="fa fa-trash"></span>-->
+                            <!--</a>-->
+                        <!--</span>-->
+                            <!--</td>-->
+                            <!--<td class="song-time">-->
+                                <!--<a>{{song.time}}</a>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>

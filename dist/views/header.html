@@ -1,0 +1,42 @@
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="app">
+                <img ng-src="{{baseUrl}}images/logo.png"  alt="Melody" height="40px" width="40px">
+                Melody
+            </a>
+        </div>
+        <ul class="nav navbar-nav nav-center position-center">
+            <li class="nav-item">
+                <a ui-sref="app">Home</a>
+            </li>
+            <li class="nav-item">
+                <a ui-sref="app.personal">Personal Center</a>
+            </li>
+            <li class="nav-item">
+                <a ui-sref="app.about">About</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-if="isLoggedIn">
+                <a class="avatar" ui-sref="app.personal({id: userID})">
+                    <img ng-src="{{avatar}}" alt="avatar" width="30px" height="30px">
+                </a>
+            </li>
+            <li  ng-if="isLoggedIn">
+                <a ui-sref="app.personal({id: userID})">
+                    <span>{{username}}</span>
+                </a>
+            </li>
+            <button class="nav navbar-btn btn btn-danger"  ng-if="isLoggedIn" ng-click="doLogout()">
+                &nbsp;&nbsp;<span class="fa fa-sign-out"></span> Sign out
+            </button>
+            <button class="nav navbar-btn btn btn-success" ng-if="!isLoggedIn" ng-click="openRegisterModal()">
+                &nbsp;&nbsp;Sign Up
+            </button>
+            <button class="nav navbar-btn btn btn-primary" ng-if="!isLoggedIn" ng-click="openLoginModal()">
+                &nbsp;&nbsp;<span class="fa fa-sign-in"></span> Sign In
+            </button>
+        </ul>
+    </div>
+</div>

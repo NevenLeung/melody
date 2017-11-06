@@ -1,0 +1,38 @@
+<div class="playlist">
+    <div class="playlist-header">
+        <span>Playlist</span>
+        <a clear-playlist class="pull-right" title="clear the playlist">
+            <span class="fa fa-trash-o"></span>
+        </a>
+    </div>
+    <div class="playlist-group">
+        <table class="table table-hover table-condensed" sv-root sv-part="playlist">
+            <tr ng-repeat="song in playlist" class="playlist-item" sv-element>
+                <td class="song-index">
+                    <span ng-if="!isPlaying || !(currentPlaying.id == song.id)">{{$index + 1}}</span>
+                    <span ng-if="currentPlaying.id == song.id && isPlaying" class="wave">&nbsp;&nbsp;&nbsp;</span>
+                </td>
+                <!-- Only click on the song info or the blank of playlist to play the song -->
+                <td class="song-info" play-from-playlist="song">
+                    <a>{{ song.title }}</a>
+                    <a title="Drag/drop a item to adjust the playlist order">-</a>
+                    <a>{{song.artist}}</a>
+                </td>
+                <td>
+                    <span class="song-ctrl">
+                        <a ng-click="toggleFavorite(song)">
+                            <span class="fa" ng-class="{'fa-heart': song.favorite, 'fa-heart-o': !song.favorite}"></span>
+                        </a>
+                        <a remove-from-playlist="song" data-index="{{$index}}">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+                    </span>
+                </td>
+                <td class="song-time">
+                    <a>{{song.time}}</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row position-center">
+        <div class="col-md-4 col-md-offset-1 user-info-wrapper">
+            <img ng-src='{{albumCover}}' style="display: block; margin: 0 auto;" alt="album photo" height="150px">
+            <div class="user-info-text" style="width: 10em; margin: 10px auto; text-align: left;">
+                <p class="text-capitalize text-overflow">
+                    <span class="fa fa-music"></span>&nbsp;
+                    <a title="music name">{{musicName}}</a>
+                </p>
+                <p class="text-capitalize text-overflow">
+                    <span class="fa fa-user-o"></span>&nbsp;
+                    <a title="singer name" ui-sref="app.artist({id:singerID})">{{singerName}}</a>
+                </p>
+                <p class="text-capitalize text-overflow">
+                    <span class="fa fa-folder-o"></span>&nbsp;
+                    <a title="album name">{{albumName}}</a>
+                </p>
+                <a editable-textarea="commentContent" onbeforesave="checkComment($data)" onaftersave="submitComment()">
+                    <pre>{{commentContent}}</pre>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <h3>Comment</h3>
+            <ul class="media-list song-comment" style="max-height: 345px; overflow: scroll">
+                <li class="media" ng-repeat="obj in comments">
+                    <div class="media-left">
+                        <a style="display: block; width: 100px" ui-sref="app.user({id: obj.postedBy._id})">
+                            <img class="media-object img-thumbnail user-img-center" ng-src='{{obj.postedBy.avatar}}'  alt="User avatar">
+                            <p style="text-align: center;">{{obj.postedBy.username}}</p>
+                        </a>
+                    </div>
+                    <div class="media-body" style="position: relative;">
+                        <pre>
+                            <p style="margin-top: -20px;">{{obj.comment}}</p>
+                            <footer style="position: absolute; bottom: 5px; right: 20px;">
+                                <small>---- {{obj.updatedAt | date:'MMM. dd, yyyy'}}</small>
+                            </footer>
+                        </pre>
+                    </div>
+                    <hr ng-if="!$last">
+                </li>
+            </ul>
+            <div class="position-center">
+                <ul uib-pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChange()" max-size="maxSize" class="pagination div-inner-center" boundary-link-numbers="true" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
