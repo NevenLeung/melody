@@ -71,7 +71,7 @@ angular.module('Melody')
 
         // item is songInfo object
         favFactory.updateFavoriteList = function (item) {
-            console.log(item.id);
+            // console.log(item.id);
             var userID = localStorage.getObject('Token', '{}').userID;
             favList = localStorage.getObject(userID, '[]');
 
@@ -86,8 +86,8 @@ angular.module('Melody')
                     },
                     {})
                     .$promise.then(function (response) {
-                    console.log('Add to favList');
-                    console.log(response);
+                    // console.log('Add to favList');
+                    // console.log(response);
                 }, function (err) {
                     console.log(err);
                 });
@@ -102,8 +102,8 @@ angular.module('Melody')
                         songID: item.id
                     })
                     .$promise.then(function (response) {
-                    console.log('Remove from favList');
-                    console.log(response);
+                    // console.log('Remove from favList');
+                    // console.log(response);
                 }, function (err) {
                     console.log(err);
                 });
@@ -120,8 +120,8 @@ angular.module('Melody')
             localStorage.storeObject(userID, '[]');
             userFactory.favorite.remove({id: userID})
                 .$promise.then(function (response) {
-                console.log('Remove all from favList');
-                console.log(response);
+                // console.log('Remove all from favList');
+                // console.log(response);
             }, function (err) {
                 console.log(err);
             });

@@ -246,7 +246,7 @@ angular.module('Melody')
         }
     }])
 
-    .controller('SongCtrl', ['$scope', '$stateParams', 'angularPlayer', '$timeout', 'songFactory', 'AuthFactory', 'ngDialog', 'baseUrl', function ($scope, $stateParams, angularPlayer, $timeout, songFactory, AuthFactory, ngDialog, baseUrl) {
+    .controller('SongCtrl', ['$scope', '$stateParams', 'angularPlayer', 'songFactory', 'AuthFactory', 'ngDialog', 'baseUrl', '$http', '$q', function ($scope, $stateParams, angularPlayer, songFactory, AuthFactory, ngDialog, baseUrl, $http, $q) {
 
         $scope.commentContent = 'click to comment!';
 
@@ -267,7 +267,7 @@ angular.module('Melody')
 
         // save the comment to database and set the pager to page number of newest comment
         $scope.submitComment = function () {
-            console.log('submit comment!');
+            // console.log('submit comment!');
             $scope.currentPage = Math.ceil($scope.totalItems/$scope.itemsPerPage);
             $scope.pageChange();
             songFactory.comment.save(
@@ -278,7 +278,7 @@ angular.module('Melody')
                         comment: $scope.commentContent
                     },
                     function (response) {
-                        console.log(response);
+                        // console.log(response);
                     },
                     function (err) {
                         console.log(err);
@@ -299,7 +299,8 @@ angular.module('Melody')
                         item.postedBy.avatar = baseUrl + 'images/avatar/' + item.postedBy.avatar;
                     });
                     $scope.comments = response.docs;
-                    $scope.totalItems = response.total
+                    $scope.totalItems = response.total;
+
                 },
                 function (err) {
                     console.log(err);
@@ -318,8 +319,20 @@ angular.module('Melody')
         }
 
         updateSongInfo();
-        $scope.pageChange();
+        // $scope.getTotal();
 
+        // use a promise to make sure to get num of comments, and set the pager to the last
+        var d = $q.defer();
+        $http.get(baseUrl+'songs/' + $stateParams.id + '/comments' , {page:$scope.currentPage})
+            .then(
+                function(res) {
+                    $scope.totalItems = res.data.total;
+                    $scope.currentPage = Math.ceil($scope.totalItems/$scope.itemsPerPage);
+                    $scope.pageChange();
+                    d.resolve();
+                }, function(err){
+                    d.reject('error');
+                });
 
     }])
 
@@ -414,10 +427,10 @@ angular.module('Melody')
 
         $scope.saveUserInfo = function () {
             // make a put request to server to save information
-            console.log('save');
+            // console.log('save');
             userFactory.user.update({id: userID}, $scope.userInfo)
                 .$promise.then(function (response) {
-                console.log(response);
+                // console.log(response);
             }, function (err) {
                 console.log(err);
             });
