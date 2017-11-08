@@ -76,7 +76,7 @@
                                     </td>
                                     <td>
                                         <span class="song-ctrl">
-                                            <a music-player="play" add-song="song" title="add to playlist and play it">
+                                            <a music-player="play" add-song="song" ng-click="song.favorite = true" title="add to playlist and play it">
                                                 <span class="fa fa-play"></span>
                                             </a>
                                             <a ng-click="removeOneFromFav(song)" title="remove this song from favorite list">
