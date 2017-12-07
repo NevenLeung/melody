@@ -387,7 +387,23 @@ angular.module('Melody')
                 });
             }
         }
-        
+
+        $scope.playAll = function () {
+            angularPlayer.stop();
+            angularPlayer.setCurrentTrack(null);
+            // clearPlaylist method needs a callback
+            angularPlayer.clearPlaylist(function () {
+                // console.log('Playlist is clear.');
+            });
+
+            $timeout(function () {
+                angular.for($scope.favList, function (item) {
+                    angularPlayer.addTrack(item);
+                });
+                angularPlayer.play();
+            }, 50);
+        };
+
         $scope.changeFavListOrder = function () {
             favListOrder = [];
             angular.forEach($scope.favList, function (item) {
@@ -465,6 +481,22 @@ angular.module('Melody')
         }, function (err) {
             console.log(err);
         });
+
+        $scope.playAll = function () {
+            angularPlayer.stop();
+            angularPlayer.setCurrentTrack(null);
+            // clearPlaylist method needs a callback
+            angularPlayer.clearPlaylist(function () {
+                // console.log('Playlist is clear.');
+            });
+
+            $timeout(function () {
+                angular.for($scope.favList, function (item) {
+                    angularPlayer.addTrack(item);
+                });
+                angularPlayer.play();
+            }, 50);
+        };
 
         // $scope.userPhoto = 'images/avatar001.jpg';
         // $scope.userName = 'Neven';
