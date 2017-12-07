@@ -336,7 +336,7 @@ angular.module('Melody')
 
     }])
 
-    .controller('PersonalCtrl', ['$scope', '$state', '$timeout', '$rootScope', 'baseUrl', 'localStorage', 'userFactory', 'favFactory', '$q', '$http', 'AuthFactory', 'ngDialog', function ($scope, $state, $timeout, $rootScope, baseUrl, localStorage, userFactory, favFactory, $q, $http, AuthFactory, ngDialog) {
+    .controller('PersonalCtrl', ['$scope', '$state', '$timeout', '$rootScope', 'baseUrl', 'localStorage', 'userFactory', 'favFactory', '$q', '$http', 'AuthFactory', 'ngDialog', 'angularPlayer', function ($scope, $state, $timeout, $rootScope, baseUrl, localStorage, userFactory, favFactory, $q, $http, AuthFactory, ngDialog, angularPlayer) {
 
         // $scope.userPhoto = baseUrl + 'images/avatar001.jpg';
         // $scope.userName = 'Neven';
@@ -397,11 +397,11 @@ angular.module('Melody')
             });
 
             $timeout(function () {
-                angular.for($scope.favList, function (item) {
+                angular.forEach($scope.favList, function (item) {
                     angularPlayer.addTrack(item);
                 });
                 angularPlayer.play();
-            }, 50);
+            }, 100);
         };
 
         $scope.changeFavListOrder = function () {
@@ -462,7 +462,7 @@ angular.module('Melody')
 
     }])
 
-    .controller('UserCtrl', ['$scope', 'angularPlayer', '$stateParams','userFactory', 'baseUrl', function ($scope, angularPlayer, $stateParams, userFactory, baseUrl) {
+    .controller('UserCtrl', ['$scope', 'angularPlayer', '$stateParams','userFactory', 'baseUrl', '$timeout', function ($scope, angularPlayer, $stateParams, userFactory, baseUrl, $timeout) {
 
         $scope.favList = [];
 
@@ -491,11 +491,11 @@ angular.module('Melody')
             });
 
             $timeout(function () {
-                angular.for($scope.favList, function (item) {
+                angular.forEach($scope.favList, function (item) {
                     angularPlayer.addTrack(item);
                 });
                 angularPlayer.play();
-            }, 50);
+            }, 100);
         };
 
         // $scope.userPhoto = 'images/avatar001.jpg';
