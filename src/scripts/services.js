@@ -145,7 +145,9 @@ angular.module('Melody')
         var isAuthenticated = false;
         var username = '';
         var authToken = undefined;
+        var userInfo = localStorage.getObject('userinfo', '{}');
 
+        authFac.login(userInfo);
         loadUserCredentials();
 
         function useCredentials(credentials) {
