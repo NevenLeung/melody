@@ -2,7 +2,6 @@
 
 angular.module('Melody')
     .constant('baseUrl', 'http://localhost:3000/')
-
     .factory('songFactory', ['$resource', 'baseUrl', function ($resource, baseUrl) {
 
         return {
@@ -147,7 +146,6 @@ angular.module('Melody')
         var authToken = undefined;
         var userInfo = localStorage.getObject('userinfo', '{}');
 
-        authFac.login(userInfo);
         loadUserCredentials();
 
         function useCredentials(credentials) {
@@ -260,6 +258,10 @@ angular.module('Melody')
         authFac.getUsername = function () {
             return username;
         };
+
+        if (Object.keys(userInfo).length !== 0) {
+            authFac.login(userInfo);
+        }
 
         return authFac;
     }])
