@@ -113,13 +113,13 @@ angular.module('Melody')
         }
         
         function setFavorite() {
-            angular.forEach($scope.playlist, function (item) {
+            angular.forEach(angularPlayer.getPlaylist(), function (item) {
                 item.favorite = favFactory.isInFavList(item);
             });
         }
 
         function resetFavorite() {
-            angular.forEach($scope.playlist, function (item) {
+            angular.forEach(angularPlayer.getPlaylist(), function (item) {
                 item.favorite = false;
             });
         }

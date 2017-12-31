@@ -11,6 +11,15 @@ pre {
     word-break: keep-all;
 }
 
+canvas {
+    position:absolute;
+    left:0;
+    top:0;
+    height: 100%;
+    width: 100%;
+    z-index:-1;
+}
+
 .div-inner-center {
     margin: 0 auto;
 }
@@ -314,15 +323,15 @@ pre {
 /* The flowing styles covers the default style of the playlist and volume bar*/
 
 .playlist-sidebar {
-    width: 29px;
-    height: 100%;
+    width: 2.2em;
+    height: 74%;
     position: fixed;
     background: transparent;
     z-index: 1000;
 }
 
 .playlist-sidebar:hover {
-    background: #feeeee;
+    /*background: #feeeee;*/
     transition: background 0.5s ease-out;
 }
 
