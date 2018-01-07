@@ -48,6 +48,11 @@ canvas {
     display: inline-block !important;
 }
 
+.isActive {
+    /*color: black;*/
+    /*color: linear-gradient(#f6b7b8, #98eff2);;*/
+}
+
 .navbar-brand {
     padding: 5px 15px 13px 15px;
 }
@@ -249,13 +254,20 @@ canvas {
 
 /* player styles */
 
+.navbar-fixed-bottom {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-image: linear-gradient(to top, #fff 0, #f8f8f8 100%);
+}
+
 .player {
-    width: 80%;
+    /*width: 80%;*/
     margin: 0 auto;
 }
 
 .player-bg {
-    background: #feeeee;
+    /*background: #feeeee;*/
     transition: all 0.3s linear;
 }
 

@@ -6,50 +6,48 @@
 </div>
 
 <!-- player -->
-<div class="navbar navbar-default navbar-fixed-bottom">
-    <div class="row">
-        <div class="col-md-12 player-bg">
-            <!-- The player and the basic controller-->
-            <div class="player">
+<div class="navbar navbar-default navbar-fixed-bottom player-bg">
+    <div class="container">
+        <!-- The player and the basic controller-->
+        <div class="player">
 
-                <!-- init soundManager2 player -->
-                <sound-manager></sound-manager>
-                <a prev-track title="last track">
-                    <i class="fa fa-2x fa-step-backward player-icon" prev-track></i>
-                </a>
-                <a play-pause-toggle data-play={{playIcon}} data-pause={{pauseIcon}} title="play/pause">
-                    <span class="fa fa-2x fa-play player-icon"></span>
-                </a>
-                <a next-track title="next track">
-                    <span class="fa fa-2x fa-step-forward player-icon"></span>
-                </a>
-                <!-- the progress bar -->
-                <div class="song-progress">
-                    <p ng-class="{'invisible': !displayInfo}">
-                        <a class="text-capitalize" ui-sref="app.song({id: currentPlaying.id})">{{currentPlaying.title}}</a>
-                        -
-                        <a class="text-capitalize" ng-if="!currentPlaying.artistID.length">{{currentPlaying.artist}}</a>
-                        <a class="text-capitalize" ng-if="currentPlaying.artistID.length" ui-sref="app.artist({id: currentPlaying.artistID})">{{currentPlaying.artist}}</a> &nbsp;&nbsp;
-                        ({{ currentPostion }} / {{ currentDuration }})
-                    </p>
-                    <div class="seekBase" seek-track>
-                        <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
-                    </div>
+            <!-- init soundManager2 player -->
+            <sound-manager></sound-manager>
+            <a prev-track title="last track">
+                <i class="fa fa-2x fa-step-backward player-icon" prev-track></i>
+            </a>
+            <a play-pause-toggle data-play={{playIcon}} data-pause={{pauseIcon}} title="play/pause">
+                <span class="fa fa-2x fa-play player-icon"></span>
+            </a>
+            <a next-track title="next track">
+                <span class="fa fa-2x fa-step-forward player-icon"></span>
+            </a>
+            <!-- the progress bar -->
+            <div class="song-progress">
+                <p ng-class="{'invisible': !displayInfo}">
+                    <a class="text-capitalize" ui-sref="app.song({id: currentPlaying.id})">{{currentPlaying.title}}</a>
+                    -
+                    <a class="text-capitalize" ng-if="!currentPlaying.artistID.length">{{currentPlaying.artist}}</a>
+                    <a class="text-capitalize" ng-if="currentPlaying.artistID.length" ui-sref="app.artist({id: currentPlaying.artistID})">{{currentPlaying.artist}}</a> &nbsp;&nbsp;
+                    ({{ currentPostion }} / {{ currentDuration }})
+                </p>
+                <div class="seekBase" seek-track>
+                    <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
                 </div>
-                <a title="add to favorite - the solid heart means the song added!" ng-click="toggleFavorite(currentPlaying)">
-                    <!--<span class="fa fa-2x player-icon" ng-class="{'fa-heart': true, 'fa-heart-o': favFactory.isInFavList(currentPlaying)}"></span>-->
-                    <span class="fa fa-2x player-icon" ng-class="{ 'fa-heart': currentPlaying.favorite, 'fa-heart-o': !currentPlaying.favorite}"></span>
-                </a>
-                <a title="playlist repeat - the same color as other button means function is on!">
-                    <span class="fa fa-2x fa-repeat player-icon" ng-class="{'functionOff': !repeat}" repeat-music></span>
-                </a>
-                <a title="volume">
-                    <span class="fa fa-2x fa-volume-up player-icon" uib-tooltip-template="'views/volumeBar.html'" tooltip-class="volumeBar" tooltip-trigger="'mouseenter'" tooltip-placement="top"></span>
-                </a>
-                <a title="To get 5 random songs">
-                    <span class="fa fa-2x fa-spinner player-icon" ng-class="{'spin': spinner}" ng-click="spinIcon()"></span>
-                </a>
             </div>
+            <a title="add to favorite - the solid heart means the song added!" ng-click="toggleFavorite(currentPlaying)">
+                <!--<span class="fa fa-2x player-icon" ng-class="{'fa-heart': true, 'fa-heart-o': favFactory.isInFavList(currentPlaying)}"></span>-->
+                <span class="fa fa-2x player-icon" ng-class="{ 'fa-heart': currentPlaying.favorite, 'fa-heart-o': !currentPlaying.favorite}"></span>
+            </a>
+            <a title="playlist repeat - the same color as other button means function is on!">
+                <span class="fa fa-2x fa-repeat player-icon" ng-class="{'functionOff': !repeat}" repeat-music></span>
+            </a>
+            <a title="volume">
+                <span class="fa fa-2x fa-volume-up player-icon" uib-tooltip-template="'views/volumeBar.html'" tooltip-class="volumeBar" tooltip-trigger="'mouseenter'" tooltip-placement="top"></span>
+            </a>
+            <a title="To get 5 random songs">
+                <span class="fa fa-2x fa-spinner player-icon" ng-class="{'spin': spinner}" ng-click="spinIcon()"></span>
+            </a>
         </div>
     </div>
 </div>

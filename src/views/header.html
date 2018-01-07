@@ -7,13 +7,13 @@
             </a>
         </div>
         <ul class="nav navbar-nav nav-center position-center">
-            <li class="nav-item">
+            <li class="nav-item" ng-class="{isActive: stateIs('app')}">
                 <a ui-sref="app">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" ng-class="{isActive: stateIs('app.personal')}">
                 <a ui-sref="app.personal">Personal Center</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" ng-class="{isAtive: stateIs('app.about')}">
                 <a ui-sref="app.about">About</a>
             </li>
         </ul>

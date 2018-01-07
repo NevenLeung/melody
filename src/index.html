@@ -25,9 +25,12 @@
 </head>
 <body>
 
-    <div ui-view="player"></div>
     <div ui-view="header"></div>
-    <div ui-view="content"></div>
+    <div ui-view="player"></div>
+    <div>
+        <div ui-view="content"></div>
+        <!--<canvas id="granim-canvas"></canvas>-->
+    </div>
 
     <!-- build:js scripts/lib.js -->
     <script src="../bower_components/angular/angular.js"></script>
@@ -41,6 +44,7 @@
     <script src="../bower_components/angular-awesome-slider/dist/angular-awesome-slider.js"></script>
     <script src="../bower_components/angular-sortable-view/src/angular-sortable-view.js"></script>
     <script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <!--<script src="../bower_components/granim/dist/granim.js"></script>-->
     <!-- endbuild -->
 
     <!-- build:js scripts/app.js -->
