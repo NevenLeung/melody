@@ -1,17 +1,21 @@
 # Melody
+
+
+[![GitHub license](https://img.shields.io/github/license/NevenLeung/melody.svg)](https://github.com/NevenLeung/melody/blob/master/LICENSE)
+
 A music web application built in angular 1.6
 
 Demo -> [Melody](https://nevenleung.github.io/melody/)
 
 ## screen shot
 ![Home](https://github.com/NevenLeung/melody/blob/master//screen_shot/home.png)
-<center>Home page</center>
+<p align="center">Home page</p>
 
 ![Song](https://github.com/NevenLeung/melody/blob/master//screen_shot/song-info.jpg)
-<center>Song page</center>
+<p align="center">Song page</p>
 
 ![About](https://github.com/NevenLeung/melody/blob/master//screen_shot/about.jpg)
-<center>About page</center>
+<p align="center">About page</p>
 
 ## How to build the app
 #### clone this repo
@@ -71,6 +75,6 @@ mock-server
 
     
 ## License
-This project is licensed under the MIT License
+[MIT](https://github.com/NevenLeung/melody/blob/master/LICENSE)
 
     
