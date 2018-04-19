@@ -5,8 +5,13 @@ Demo -> [Melody](https://nevenleung.github.io/melody/)
 
 ## screen shot
 ![Home](https://github.com/NevenLeung/melody/blob/master//screen_shot/home.png)
+<center>Home page</center>
+
 ![Song](https://github.com/NevenLeung/melody/blob/master//screen_shot/song-info.jpg)
+<center>Song page</center>
+
 ![About](https://github.com/NevenLeung/melody/blob/master//screen_shot/about.jpg)
+<center>About page</center>
 
 ## How to build the app
 #### clone this repo
