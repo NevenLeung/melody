@@ -1,13 +1,10 @@
 # Melody
 
-
-[![GitHub license](https://img.shields.io/github/license/NevenLeung/melody.svg)](https://github.com/NevenLeung/melody/blob/master/LICENSE)
-
 A music web application built in angular 1.6
 
 Demo -> [Melody](https://nevenleung.github.io/melody/)
 
-## screen shot
+## Screen shot
 ![Home](https://github.com/NevenLeung/melody/blob/master//screen_shot/home.png)
 <p align="center">Home page</p>
 
