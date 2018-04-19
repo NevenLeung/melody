@@ -3,6 +3,10 @@ A music web application built in angular 1.6
 
 Demo -> [Melody](https://nevenleung.github.io/melody/)
 
+## screen shot
+![Home](https://github.com/NevenLeung/melody/blob/master//screen_shot/home.png)
+![Song](https://github.com/NevenLeung/melody/blob/master//screen_shot/song-info.jpg)
+![About](https://github.com/NevenLeung/melody/blob/master//screen_shot/about.jpg)
 
 ## How to build the app
 #### clone this repo
